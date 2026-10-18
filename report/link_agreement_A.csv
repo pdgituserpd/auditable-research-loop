@@ -1,0 +1,11 @@
+public_build,filing_years,basis,status,patents,share_of_basis
+A,1982-2018,A1 official application owner,same firm(s),992841,1
+A,1982-2018,A2 grant-name owner at calendar filing year,different firm(s),116,2e-04
+A,1982-2018,A2 grant-name owner at calendar filing year,only in public build,1378,0.0018
+A,1982-2018,A2 grant-name owner at calendar filing year,overlapping firm(s),407,5e-04
+A,1982-2018,A2 grant-name owner at calendar filing year,same firm(s),743708,0.9975
+A,1982-2018,all,different firm(s),116,1e-04
+A,1982-2018,all,only in other build,2033,0.0012
+A,1982-2018,all,only in public build,1378,8e-04
+A,1982-2018,all,overlapping firm(s),407,2e-04
+A,1982-2018,all,same firm(s),1736549,0.9977
