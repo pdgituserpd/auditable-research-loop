@@ -1,0 +1,51 @@
+{
+  "run_id": "20261018-161357.304",
+  "started": "2026-10-18 16:13:57 CDT",
+  "purpose": "TOOL TEST of the hand-check scripts (sheet filled by a script, NOT a hand-check)",
+  "git_commit": "a62e4d1",
+  "r_version": "R version 4.3.3 (2024-02-29)",
+  "settings": {
+    "tool_test": true
+  },
+  "inputs": {
+    "/tmp/claude-0/-home-claude/38a8a784-962b-5d94-8efc-211e16a5c4bb/scratchpad/synthetic_machine_filled_one_wrong.csv": "5981b97d18fcf1d30aacfcd7711e1710",
+    "data/synthetic/patent_class.csv": "ea47a5e86c926b580b080f163304f36d",
+    "data/synthetic/firm_year.csv": "eca3bb0705b7648371a4a899e535253c"
+  },
+  "checks": [
+    {
+      "check": "hand-check: random cases match the code",
+      "passed": false,
+      "detail": "99 of 100 match"
+    },
+    {
+      "check": "hand-check: tricky cases match the code",
+      "passed": true,
+      "detail": "10 of 10 match"
+    },
+    {
+      "check": "hand-check source_filing_year_ok",
+      "passed": true,
+      "detail": "110 Y, 0 N, 0 blank"
+    },
+    {
+      "check": "hand-check source_owner_ok",
+      "passed": true,
+      "detail": "0 Y, 0 N, 110 blank"
+    },
+    {
+      "check": "hand-check source_subclass_present",
+      "passed": true,
+      "detail": "0 Y, 0 N, 110 blank"
+    }
+  ],
+  "outputs": {
+    "handcheck_comparison": {
+      "rows": 110,
+      "fingerprint": "d9232887d560b965725776acaf31272d"
+    }
+  },
+  "finished": "2026-10-18 16:13:57 CDT",
+  "notes": "",
+  "checks_failed": 1
+}

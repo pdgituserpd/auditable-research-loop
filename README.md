@@ -26,7 +26,7 @@ Definition: [`spec/new_classes.md`](spec/new_classes.md).
 | Blind rebuild | Written by a separate AI agent from the definition only, in another language (Python) | `python/new_classes_blind.py` |
 | Fake firms | Small firms whose answers were worked out by hand | `tests/make_fixtures.R` |
 | Rules | Changes to the input with known effects on the output (duplicates, shuffles, year *t*, other firms...) | `tests/rules.R` |
-| Random hand-check | Random firm-years worked out by a person from the raw patent list | `handcheck/` |
+| Random hand-check | At least 100 random firm-years (plus about 10 tricky ones) worked out by a person from the raw patent list, with the windows left unmarked; one patent per case checked against the patent itself | `handcheck/` |
 | Planted bugs | Realistic mistakes put in on purpose; every layer is scored on which it catches | `R/mutants/` |
 | AI code review test | Whether an AI reviewer, given each buggy version, finds the bug | `ai_review/` |
 | Saved snapshot | Fingerprint of the approved output; later changes upstream are flagged | `logs/snapshots/` |
@@ -48,11 +48,15 @@ python3 python/new_classes_blind.py --patent-class data/synthetic/patent_class.c
     --firm-year data/synthetic/firm_year.csv --out data/synthetic/out_blind.csv
 Rscript tests/run_all_checks.R          # writes report/catch_matrix.csv and a run record
 
-# random hand-check
-Rscript handcheck/make_worksheet.R data/synthetic/patent_class.csv data/synthetic/firm_year.csv 5
-# ...fill in handcheck/sheets/<date>_answers_TO_FILL.csv by hand, then:
-Rscript handcheck/compare_handcheck.R handcheck/sheets/<date>_answers_TO_FILL.csv
+# random hand-check (100 random + 10 tricky by default; instructions in handcheck/HOW_TO.md)
+Rscript handcheck/make_worksheet.R <patent_class.csv> <firm_year.csv>
+# ...fill in handcheck/sheets/<source>_<date>_answers_TO_FILL.csv by hand (can be done in sittings), then:
+Rscript handcheck/compare_handcheck.R handcheck/sheets/<source>_<date>_answers_TO_FILL.csv <patent_class.csv> <firm_year.csv>
 ```
+
+The worksheet in `handcheck/sheets/synthetic_*` is an example on made-up data. The two
+comparison files marked `_TOOLTEST` come from a script filling that sheet (one with a planted
+wrong answer) to test the hand-check scripts; they are not hand-checks.
 
 Real data (PatentsView and DISCERN 2.0, both public) is prepared by `data/prepare_real.R`
 *(to be added)*.
