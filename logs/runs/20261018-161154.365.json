@@ -1,0 +1,72 @@
+{
+  "run_id": "20261018-161154.365",
+  "started": "2026-10-18 16:11:54 CDT",
+  "purpose": "all check layers on the correct build and planted bugs",
+  "git_commit": "fb4cba9",
+  "r_version": "R version 4.3.3 (2024-02-29)",
+  "settings": {
+    "base_years": 5,
+    "forward_years": 3,
+    "first_listed_only": true
+  },
+  "inputs": {
+    "/home/claude/realdata/A/patent_class.csv": "21c24585a4bd84c8c26c8c0f3ddc69e3",
+    "/home/claude/realdata/A/firm_year.csv": "de981119f6de0081f0479b6e3ff33835",
+    "tests/fixtures/fake_patent_class.csv": "f601b98c5704de7c560f17d848fe2c86",
+    "/home/claude/realdata/A/out_blind.csv": "a0898ff8bba3ae65e810bc8efe31e757"
+  },
+  "checks": [
+    {
+      "check": "unique keys firm_id+year (output)",
+      "passed": true,
+      "detail": "157180 rows, 157180 unique keys, 0 duplicated"
+    },
+    {
+      "check": "row count (one row per firm-year)",
+      "passed": true,
+      "detail": "157180 rows, expected 157180"
+    },
+    {
+      "check": "range new_classes >= 0",
+      "passed": true,
+      "detail": "0 values outside [0, Inf]"
+    },
+    {
+      "check": "no infinite values new_classes",
+      "passed": true,
+      "detail": "0 infinite values"
+    },
+    {
+      "check": "missing exactly when expected (new_classes NA iff empty base)",
+      "passed": true,
+      "detail": "0 rows where missingness does not match the rule"
+    },
+    {
+      "check": "not larger than its bound (new_classes <= forward classes)",
+      "passed": true,
+      "detail": "0 rows violate"
+    },
+    {
+      "check": "correct build passes every layer",
+      "passed": true
+    },
+    {
+      "check": "every planted bug caught by at least one layer",
+      "passed": false,
+      "detail": "9 of 10 caught"
+    }
+  ],
+  "outputs": {
+    "catch_matrix": {
+      "rows": 11,
+      "fingerprint": "df29390760a2166f3374ab9008187fab"
+    },
+    "new_classes_correct_build": {
+      "rows": 157180,
+      "fingerprint": "35ced444b007bc324b112d7ff3d908d3"
+    }
+  },
+  "finished": "2026-10-18 16:34:20 CDT",
+  "notes": "",
+  "checks_failed": 1
+}
