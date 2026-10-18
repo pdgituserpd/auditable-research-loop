@@ -45,3 +45,22 @@ build_new_classes_slow <- function(patent_class, firm_year,
   rownames(out) <- NULL
   out
 }
+
+# Same function, run one firm at a time, for large data. Because of Rule 10 (firms are separate),
+# this gives exactly the same result; it only avoids searching all patents for every firm-year.
+# The function above is unchanged and is the one to read against the definition.
+build_new_classes_slow_by_firm <- function(patent_class, firm_year, ...) {
+  pc <- as.data.frame(patent_class, stringsAsFactors = FALSE)
+  fy <- unique(as.data.frame(firm_year, stringsAsFactors = FALSE)[, c("firm_id", "year")])
+  pc_by_firm <- split(pc, pc$firm_id)
+  fy_by_firm <- split(fy, fy$firm_id)
+  empty <- pc[0, , drop = FALSE]
+  parts <- lapply(names(fy_by_firm), function(f) {
+    mine <- if (is.null(pc_by_firm[[f]])) empty else pc_by_firm[[f]]
+    build_new_classes_slow(mine, fy_by_firm[[f]], ...)
+  })
+  out <- do.call(rbind, parts)
+  out <- out[order(out$firm_id, out$year), ]
+  rownames(out) <- NULL
+  out
+}

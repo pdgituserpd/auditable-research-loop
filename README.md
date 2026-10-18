@@ -58,8 +58,24 @@ The worksheet in `handcheck/sheets/synthetic_*` is an example on made-up data. T
 comparison files marked `_TOOLTEST` come from a script filling that sheet (one with a planted
 wrong answer) to test the hand-check scripts; they are not hand-checks.
 
-Real data (PatentsView and DISCERN 2.0, both public) is prepared by `data/prepare_real.R`
-*(to be added)*.
+### Real data
+
+Inputs are public: PatentsView bulk tables (`g_patent`, `g_application`, `g_cpc_current`) and
+DISCERN 2.0.1's `csv_files` (Arora et al. 2024, https://zenodo.org/records/13619821). Put the three
+PatentsView zips in one folder with DISCERN's csv files in a `discern/` subfolder, then:
+
+```bash
+Rscript data/prepare_real.R <raw_dir> A          # writes data/real/A/ (about 3 minutes, 5 GB memory)
+python3 python/new_classes_blind.py --patent-class data/real/A/patent_class.csv \
+    --firm-year data/real/A/firm_year.csv --out data/real/A/out_blind.csv
+Rscript tests/run_all_checks.R data/real/A/patent_class.csv data/real/A/firm_year.csv \
+    data/real/A/out_blind.csv logs/snapshots/new_classes_real_A.txt report/catch_matrix_real_A.csv
+Rscript handcheck/make_worksheet.R data/real/A/patent_class.csv data/real/A/firm_year.csv   # 100 random + 10 tricky
+```
+
+`A` and `B` are two rules for which firm owns a patent (decision D11 in `logs/decisions.csv`).
+`data/compare_links.R` compares the public links with an independent build of the same links
+(the researcher's own pipeline, which uses licensed data); only the counts are kept, in `report/`.
 
 ## Not in this repository
 

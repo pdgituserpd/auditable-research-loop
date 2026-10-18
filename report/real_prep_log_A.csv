@@ -1,0 +1,17 @@
+step,rows,patents,firms,detail,link_rule
+g_patent: all records,9361444,9361444,,"",A
+"utility, not withdrawn, granted by 2024-12-31",8187825,8187825,,"",A
+"patents with more than one filing date (dropped, as in precedent)",0,0,,"",A
+filing date found,8187825,8187825,,"",A
+"filing date after grant date (kept, flagged as in precedent)",126,126,,"",A
+A1 links: official application owner,1158956,1154552,3551,"",A
+A2 links: grant-name owner at filing (patents not in A1),799014,793655,5016,"",A
+links with filing year 1982-2018,1747472,1738450,5420,"",A
+patents linked to more than one firm (each firm counts it),8552,8552,,"",A
+g_cpc_current: all codes,57969447,8432570,,"",A
+linked patents with CPC codes (distinct subclasses),3470779,1738435,,"",A
+linked patents with no CPC code (kept with a missing class),15,15,,"",A
+patents with codes but no first-listed code (no class under the default),0,0,,"",A
+patent_class rows (patent x firm x subclass),3492710,1738450,5420,"",A
+distinct first-listed subclasses,630,,,"",A
+firm_year rows,157180,,5420,"",A

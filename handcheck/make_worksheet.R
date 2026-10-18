@@ -87,7 +87,10 @@ answers[, `:=`(your_base_classes = "", your_forward_classes = "", your_new_class
 setorder(answers, case_id)
 
 # file names carry the data source (folder name, e.g. "synthetic" or "real") and the date
-stamp <- paste0(basename(dirname(normalizePath(pc_path))), "_", format(Sys.Date(), "%Y-%m-%d"))
+src_dir <- dirname(normalizePath(pc_path))
+src_label <- basename(src_dir)
+if (basename(dirname(src_dir)) == "real") src_label <- paste0("real_", src_label)   # e.g. data/real/A -> real_A
+stamp <- paste0(src_label, "_", format(Sys.Date(), "%Y-%m-%d"))
 dir.create("handcheck/sheets", showWarnings = FALSE)
 fwrite(listing, sprintf("handcheck/sheets/%s_patents.csv", stamp), na = "")
 fwrite(answers, sprintf("handcheck/sheets/%s_answers_TO_FILL.csv", stamp), na = "")
