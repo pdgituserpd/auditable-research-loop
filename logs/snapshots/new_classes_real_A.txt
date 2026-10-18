@@ -1,0 +1,2 @@
+35ced444b007bc324b112d7ff3d908d3
+Snapshot of the correct build on the real data (link rule A, public PatentsView + DISCERN 2.0.1), 18 Oct 2026. Status: draft, pending Pouya approval.

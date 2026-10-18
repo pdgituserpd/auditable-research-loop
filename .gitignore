@@ -6,3 +6,5 @@ data/real/
 .Rhistory
 .RData
 __pycache__/
+# Hand-check worksheets are personal working files
+handcheck/sheets/*.csv

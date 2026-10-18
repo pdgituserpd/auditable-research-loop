@@ -22,7 +22,7 @@ add_patent <- function(pc, firm, filing_year, cls) {
                        cpc_seq = 0L, cpc_subclass = cls))
 }
 
-run_rules <- function(builder, pc, fy, n_cases = 25, seed = 1) {
+run_rules <- function(builder, pc, fy, n_cases = 25, seed = 1, ref = NULL) {
   pc <- as.data.table(pc); fy <- as.data.table(fy)
   base_out <- builder(pc, fy)
   res <- list()
@@ -31,7 +31,8 @@ run_rules <- function(builder, pc, fy, n_cases = 25, seed = 1) {
   res$R2_shuffled_rows <- same_output(base_out, builder(pc[sample(.N)], fy))
 
   # Cases: firm-years with a non-empty base, according to the slow reference build
-  ref <- as.data.table(build_new_classes_slow_by_firm(pc, fy))
+  # (the reference build is the same for every builder, so the caller can pass it in once)
+  ref <- if (is.null(ref)) as.data.table(build_new_classes_slow_by_firm(pc, fy)) else as.data.table(ref)
   set.seed(seed)
   cases <- ref[n_base_classes > 0][sample(.N, min(.N, n_cases))]
   r3 <- r4 <- r5 <- logical(nrow(cases))
