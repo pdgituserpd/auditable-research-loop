@@ -1,0 +1,2 @@
+f7ca8639a4c345d54c60caf9b965f5b6
+Snapshot of the correct build on the made-up data, 18 Oct 2026. Status: draft, pending Pouya approval.

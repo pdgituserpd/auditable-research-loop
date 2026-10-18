@@ -1,0 +1,8 @@
+# Real data stays out of the repository (scripts download or rebuild it)
+data/real/
+*.tsv
+*.zip
+# R and Python clutter
+.Rhistory
+.RData
+__pycache__/

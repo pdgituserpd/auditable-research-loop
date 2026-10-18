@@ -1,0 +1,2 @@
+id,date,what_changed,class,reason,before_or_after_results,would_make_it_either_way,test_can_still_fail,approved_by
+C01,2026-10-18,"Spec rule 11: repeated rows in firm_year are collapsed to one output row (wording was ""one row per row of firm_year"")",Correction,"The blind rebuild read the old wording as keeping repeated firm-years (6,240 vs 6,200 rows); all values agreed once repeats were collapsed",Before any real-data results,yes,yes,pending (Pouya)

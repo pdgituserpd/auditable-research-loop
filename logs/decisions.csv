@@ -1,0 +1,10 @@
+id,date,item,options,choice,reason,precedent,decided_by,status
+D01,2026-10-18,Dating of patents,filing year; grant year,filing year,Standard in the literature,To confirm in precedent check,Pouya,decided
+D02,2026-10-18,Classification system,USPC; CPC,CPC,USPC is no longer maintained; same as P023,To confirm in precedent check,Pouya,decided
+D03,2026-10-18,Class level and codes counted,CPC subclass (4 characters) first-listed; all subclasses on the patent; CPC group,CPC subclass of the first-listed code; all codes as robustness,Same as P023 (one class per patent),Pending precedent check,Pouya (level); Claude proposal (first-listed),pending
+D04,2026-10-18,Windows,base t-5 to t-1 and forward t+1 to t+3; other lengths,base t-5 to t-1; forward t+1 to t+3; year t in neither,Five-year knowledge base and three-year forward window are common for search measures,To confirm in precedent check,Pouya,decided
+D05,2026-10-18,Firm-years with no patents in the base window,missing; zero; count all classes as new,missing (NA),Without a base there is nothing to compare against so there is no measure,Pending precedent check,Pouya,decided
+D06,2026-10-18,Focal years,1985-2015; 1987-2015,1987-2015,Patent data realistically starts in 1982 so the first full five-year base is 1982-1986; forward window must end by 2018 because recent filings are only partly granted,Same end-year logic as P023,Pouya,decided
+D07,2026-10-18,Firm identity,DISCERN firm links; PatentsView assignee IDs,DISCERN 2.0 public firm links,Public and reproducible; same as current pipeline,DISCERN 2.0 (Arora et al.),Pouya,decided
+D08,2026-10-18,Sample of firms,firms with at least one patent in the sample period; other,firms with at least one patent filed 1982-2018,Rule of thumb used in the pipeline,,Pouya,decided
+D09,2026-10-18,Random hand-check size (prototype),5; 10; 30; 100,10 random firm-years plus 2 tricky ones; Stage 2 target 100,Fits the prototype time budget; 100 random cases with no mismatch bounds the error rate below about 3% (rule of three),Hanley & Lippman-Hand (1983),Claude (asked by Pouya),decided
