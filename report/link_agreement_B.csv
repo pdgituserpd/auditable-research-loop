@@ -1,0 +1,10 @@
+public_build,filing_years,basis,status,patents,share_of_basis
+B,1982-2018,B DISCERN grant-file owner,different firm(s),63134,0.0367
+B,1982-2018,B DISCERN grant-file owner,only in public build,55207,0.0321
+B,1982-2018,B DISCERN grant-file owner,overlapping firm(s),2506,0.0015
+B,1982-2018,B DISCERN grant-file owner,same firm(s),1597398,0.9297
+B,1982-2018,all,different firm(s),63134,0.0352
+B,1982-2018,all,only in other build,76067,0.0424
+B,1982-2018,all,only in public build,55207,0.0308
+B,1982-2018,all,overlapping firm(s),2506,0.0014
+B,1982-2018,all,same firm(s),1597398,0.8903
