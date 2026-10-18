@@ -32,7 +32,7 @@ plain build and the blind Python rebuild agree on all 157,180 firm-years.
 
 Planted bugs, real data vs made-up data:
 
-- **9 of 10 caught**, each by 3 to 5 layers.
+- **9 of 10 caught**, each by 4 to 6 of the 6 layers (3 to 5 before the draft real-data snapshot was saved).
 - **M9 (class cut to three characters)** was caught only by the fake firms on the made-up data.
   On the real data it is also caught by the slow build and the blind rebuild, because real CPC
   subclasses share first three characters (e.g., A01B and A01C).
@@ -46,4 +46,4 @@ Planted bugs, real data vs made-up data:
 ## Run time
 
 About 3 minutes to prepare the data (5 GB memory), 11 seconds for the blind rebuild, and about
-22 minutes for all check layers before change C06.
+4 minutes for all check layers (22 minutes before change C06; results identical).
