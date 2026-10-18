@@ -37,7 +37,7 @@ layers <- function(builder, label) {
   l2 <- nrow(fo) == nrow(fx_ex) && all(eq(m$new_classes_exp, m$new_classes)) &&
         all(eq(m$n_base_classes_exp, m$n_base_classes)) && all(eq(m$n_forward_classes_exp, m$n_forward_classes))
   # L3: rules the output must obey
-  rl <- run_rules(builder, pc, fy)
+  rl <- run_rules(builder, pc, fy, ref = slow)
   l3 <- all(rl)
   # L4: agreement with the slow, plain version
   c4 <- compare_outputs(out, slow, label, "slow")
