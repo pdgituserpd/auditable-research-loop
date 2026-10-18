@@ -1,0 +1,37 @@
+{
+  "run_id": "20261018-160816.688",
+  "started": "2026-10-18 16:08:16 CDT",
+  "purpose": "prepare real data (link rule B)",
+  "git_commit": "fb4cba9",
+  "r_version": "R version 4.3.3 (2024-02-29)",
+  "settings": {
+    "link_rule": "B",
+    "filing_years": [1982, 2018],
+    "focal_years": [1987, 2015],
+    "grant_cutoff": "2024-12-31"
+  },
+  "inputs": {
+    "/home/claude/realdata/raw/g_patent.tsv.zip": "6cb4d92ac3033f85e9874ffd93458663",
+    "/home/claude/realdata/raw/g_application.tsv.zip": "26001068098f4240e0762c63ffbb331e",
+    "/home/claude/realdata/raw/g_cpc_current.tsv.zip": "c9d514eaa9ae103e774a9cd75916f0fa",
+    "/home/claude/realdata/raw/discern/permno_gvkey.csv": "24b21aea3a5eb3f6a777fbb708a33a21",
+    "/home/claude/realdata/raw/discern/discern_uo_names.csv": "26a87ba175f30da5d38e86c99297110b",
+    "/home/claude/realdata/raw/discern/discern_sub_names.csv": "887adf3dbd60250be0b87a44fe9fc7a3",
+    "/home/claude/realdata/raw/discern/discern_pat_grant_1980_2021.csv": "7366adbc75ec080fe331c4b789d5e297",
+    "/home/claude/realdata/raw/discern/discern_pat_app_1980_2021.csv": "3323bb0c726880ac6460682d9b6b1810"
+  },
+  "checks": [],
+  "outputs": {
+    "patent_class": {
+      "rows": 50046,
+      "fingerprint": "83f45b1c1f335fae3ed90f45e2b0d487"
+    },
+    "firm_year": {
+      "rows": 162052,
+      "fingerprint": "7af50633c5de205786a19da09ec3781b"
+    }
+  },
+  "finished": "2026-10-18 16:10:56 CDT",
+  "notes": "real-data inputs written to /home/claude/realdata/B",
+  "checks_failed": 0
+}

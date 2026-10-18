@@ -1,0 +1,72 @@
+{
+  "run_id": "20261018-160929.818",
+  "started": "2026-10-18 16:09:29 CDT",
+  "purpose": "all check layers on the correct build and planted bugs",
+  "git_commit": "fb4cba9",
+  "r_version": "R version 4.3.3 (2024-02-29)",
+  "settings": {
+    "base_years": 5,
+    "forward_years": 3,
+    "first_listed_only": true
+  },
+  "inputs": {
+    "data/synthetic/patent_class.csv": "ea47a5e86c926b580b080f163304f36d",
+    "data/synthetic/firm_year.csv": "eca3bb0705b7648371a4a899e535253c",
+    "tests/fixtures/fake_patent_class.csv": "f601b98c5704de7c560f17d848fe2c86",
+    "data/synthetic/out_blind.csv": "59c3197e20b5a47d43346143e53358cc"
+  },
+  "checks": [
+    {
+      "check": "unique keys firm_id+year (output)",
+      "passed": true,
+      "detail": "5800 rows, 5800 unique keys, 0 duplicated"
+    },
+    {
+      "check": "row count (one row per firm-year)",
+      "passed": true,
+      "detail": "5800 rows, expected 5800"
+    },
+    {
+      "check": "range new_classes >= 0",
+      "passed": true,
+      "detail": "0 values outside [0, Inf]"
+    },
+    {
+      "check": "no infinite values new_classes",
+      "passed": true,
+      "detail": "0 infinite values"
+    },
+    {
+      "check": "missing exactly when expected (new_classes NA iff empty base)",
+      "passed": true,
+      "detail": "0 rows where missingness does not match the rule"
+    },
+    {
+      "check": "not larger than its bound (new_classes <= forward classes)",
+      "passed": true,
+      "detail": "0 rows violate"
+    },
+    {
+      "check": "correct build passes every layer",
+      "passed": true
+    },
+    {
+      "check": "every planted bug caught by at least one layer",
+      "passed": true,
+      "detail": "10 of 10 caught"
+    }
+  ],
+  "outputs": {
+    "catch_matrix": {
+      "rows": 11,
+      "fingerprint": "033a3e68dff2ac7d23e13959627387fb"
+    },
+    "new_classes_correct_build": {
+      "rows": 5800,
+      "fingerprint": "f7ca8639a4c345d54c60caf9b965f5b6"
+    }
+  },
+  "finished": "2026-10-18 16:10:26 CDT",
+  "notes": "",
+  "checks_failed": 0
+}

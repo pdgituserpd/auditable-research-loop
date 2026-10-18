@@ -18,9 +18,16 @@ first <- unique(pc[cpc_seq == 0L, .(patent_id, firm_id, filing_year, cpc_subclas
 
 # Which firm-years are eligible: the draw uses only the raw patent counts, never the measure itself,
 # so the person's count is not steered by the code's answer.
-cnt <- function(f, lo, hi) first[firm_id == f & filing_year >= lo & filing_year <= hi, .N]
-fy[, n_base_pat := mapply(function(f, t) cnt(f, t - 5, t - 1), firm_id, year)]
-fy[, n_fwd_pat  := mapply(function(f, t) cnt(f, t + 1, t + 3), firm_id, year)]
+# (patents per firm and filing year, summed over each window; done with joins so it scales to
+#  the real data, where a row-by-row search over every firm-year would take hours)
+per_year <- first[, .(n = .N), by = .(firm_id, filing_year)]
+win_count <- function(offsets) {
+  x <- per_year[, .(year = filing_year + offsets), by = .(firm_id, filing_year, n)]
+  x[, .(n = sum(n)), by = .(firm_id, year)]
+}
+fy <- merge(fy, setnames(win_count(1:5), "n", "n_base_pat"), by = c("firm_id", "year"), all.x = TRUE)
+fy <- merge(fy, setnames(win_count(-(1:3)), "n", "n_fwd_pat"), by = c("firm_id", "year"), all.x = TRUE)
+fy[is.na(n_base_pat), n_base_pat := 0L]; fy[is.na(n_fwd_pat), n_fwd_pat := 0L]
 
 set.seed(seed)
 pick <- fy[n_base_pat > 0 & n_fwd_pat > 0 & n_base_pat + n_fwd_pat <= 30][sample(.N, min(.N, n_random))]

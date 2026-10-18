@@ -1,6 +1,6 @@
 # Runs every check layer on the correct build and on each planted bug, and writes the
 # "catch matrix": which layers caught which bug. Also writes a run record to logs/runs/.
-# Usage (repo root): Rscript tests/run_all_checks.R [patent_class.csv] [firm_year.csv] [blind_output.csv]
+# Usage (repo root): Rscript tests/run_all_checks.R [patent_class.csv] [firm_year.csv] [blind_output.csv] [snapshot.txt] [catch_matrix.csv]
 
 suppressPackageStartupMessages({ library(data.table) })
 for (f in c("R/runlog.R", "R/checks.R", "R/io.R", "R/new_classes_fast.R", "R/new_classes_slow.R", "tests/rules.R")) source(f)
@@ -9,7 +9,8 @@ args <- commandArgs(trailingOnly = TRUE)
 pc_path <- if (length(args) >= 1) args[1] else "data/synthetic/patent_class.csv"
 fy_path <- if (length(args) >= 2) args[2] else "data/synthetic/firm_year.csv"
 blind_path <- if (length(args) >= 3) args[3] else "data/synthetic/out_blind.csv"
-snap_path <- "logs/snapshots/new_classes_synthetic.txt"
+snap_path <- if (length(args) >= 4) args[4] else "logs/snapshots/new_classes_synthetic.txt"
+matrix_path <- if (length(args) >= 5) args[5] else "report/catch_matrix.csv"
 
 start_run("all check layers on the correct build and planted bugs",
           settings = list(base_years = 5, forward_years = 3, first_listed_only = TRUE),
@@ -19,7 +20,7 @@ pc <- read_patent_class(pc_path); fy <- read_firm_year(fy_path)
 fx_pc <- read_patent_class("tests/fixtures/fake_patent_class.csv")
 fx_fy <- read_firm_year("tests/fixtures/fake_firm_year.csv")
 fx_ex <- fread("tests/fixtures/fake_expected.csv")
-slow <- as.data.table(build_new_classes_slow(pc, fy))
+slow <- as.data.table(build_new_classes_slow_by_firm(pc, fy))
 blind <- if (file.exists(blind_path)) fread(blind_path, colClasses = c(firm_id = "character"), na.strings = c("NA", "")) else NULL
 snapshot <- if (file.exists(snap_path)) readLines(snap_path)[1] else NA_character_
 
@@ -65,7 +66,7 @@ mat[, caught_by_any := Reduce(`|`, lapply(.SD, function(x) isTRUE(x) | (!is.na(x
 mat[, n_layers_caught := rowSums(as.matrix(.SD) == TRUE, na.rm = TRUE), .SDcols = lay]
 
 dir.create("report", showWarnings = FALSE)
-fwrite(mat, "report/catch_matrix.csv")
+fwrite(mat, matrix_path)
 log_check(list(check = "correct build passes every layer", passed = !mat[build == "correct build", any(unlist(.SD), na.rm = TRUE), .SDcols = lay]))
 log_check(list(check = "every planted bug caught by at least one layer", passed = all(mat[build != "correct build", caught_by_any]),
                detail = sprintf("%d of %d caught", sum(mat[build != "correct build", caught_by_any]), nrow(idx))))

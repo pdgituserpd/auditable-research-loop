@@ -31,7 +31,7 @@ run_rules <- function(builder, pc, fy, n_cases = 25, seed = 1) {
   res$R2_shuffled_rows <- same_output(base_out, builder(pc[sample(.N)], fy))
 
   # Cases: firm-years with a non-empty base, according to the slow reference build
-  ref <- as.data.table(build_new_classes_slow(pc, fy))
+  ref <- as.data.table(build_new_classes_slow_by_firm(pc, fy))
   set.seed(seed)
   cases <- ref[n_base_classes > 0][sample(.N, min(.N, n_cases))]
   r3 <- r4 <- r5 <- logical(nrow(cases))
