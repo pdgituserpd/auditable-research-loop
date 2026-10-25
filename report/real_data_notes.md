@@ -1,4 +1,4 @@
-# First run on real data (18 Oct 2026)
+# Real-data runs (18 and 25 Oct 2026)
 
 Inputs: public PatentsView tables and DISCERN 2.0.1, prepared by `data/prepare_real.R` with link
 rule A (decision D11, pending). Counts at each step: `report/real_prep_log_A.csv`.
@@ -32,18 +32,20 @@ plain build and the blind Python rebuild agree on all 157,180 firm-years.
 
 Planted bugs, real data vs made-up data:
 
-- **9 of 10 caught**, each by 4 to 6 of the 6 layers (3 to 5 before the draft real-data snapshot was saved).
+- **10 of 10 caught.** Nine are caught by 4 to 6 of the 6 coded layers. The tenth, M1 (repeated
+  firm-years kept), is caught only by rule R10, added on 25 Oct (change C09). On the first real-data
+  run (18 Oct) every layer passed M1, because the real firm-year list has no repeated rows, so the
+  bug changes nothing. A bug that only shows when the input has a defect is invisible on clean
+  input. R10 repeats some firm-year rows on purpose, so it catches M1 on any data.
 - **M9 (class cut to three characters)** was caught only by the fake firms on the made-up data.
   On the real data it is also caught by the slow build and the blind rebuild, because real CPC
   subclasses share first three characters (e.g., A01B and A01C).
-- **M1 (repeated firm-years not collapsed) is not caught, and cannot be on this data.** The real
-  firm-year list has no repeated rows, so the bug changes nothing. It is caught on the made-up
-  data, which has repeats on purpose. A bug that only shows when the input has a defect is
-  invisible on clean input; a rule that repeats firm-year rows on purpose would catch it on any data.
-- **M10 (base window shifted one year)** again slips past the fake firms and is caught by the
+- **M10 (base window shifted one year)** slips past the fake firms and is caught by the
   rules, the slow build and the blind rebuild.
+- **AI code review** (`ai_review/`): every reviewer flagged every planted bug at the right line and
+  passed the correct build, in both rounds. The bugs are too easy to tell reviewers apart.
 
 ## Run time
 
 About 3 minutes to prepare the data (5 GB memory), 11 seconds for the blind rebuild, and about
-4 minutes for all check layers (22 minutes before change C06; results identical).
+5 minutes for all check layers (22 minutes before change C06, with identical results).

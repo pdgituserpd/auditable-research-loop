@@ -1,0 +1,18 @@
+{
+  "verdict": "deviates from spec",
+  "deviations": [
+    {
+      "rule": "5",
+      "line": 13,
+      "what": "The forward set is built with fy - 0:(forward_years - 1), so a patent filed in year fy counts for focal years fy, fy-1 and fy-2 instead of fy-1, fy-2 and fy-3, which drops patents filed in t+3 from F(i,t).",
+      "confidence": "high"
+    },
+    {
+      "rule": "6",
+      "line": 13,
+      "what": "The same off-by-one places a patent filed in focal year t into F(i,t), so year t leaks into the forward window.",
+      "confidence": "high"
+    }
+  ],
+  "notes": "Dating, the first-listed filter, the missing-class exclusion, the base window (fy+1 to fy+5), the anti-join count, the empty-base NA, the no-forward zero, de-duplication, firm separation and output columns all match the spec. The single defect is the forward-window expansion on line 13, which the spec's own check that adding a year-t patent changes nothing for year t would fail."
+}

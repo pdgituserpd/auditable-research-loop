@@ -1,0 +1,7 @@
+{
+  "verdict": "deviates from spec",
+  "deviations": [
+    {"rule": "2", "line": 8, "what": "build.R never reads cpc_seq, so with first_listed_only = TRUE (the default) it counts the subclass of every code on each patent instead of only the cpc_seq == 0 code, and the first_listed_only parameter declared on line 6 is never used.", "confidence": "high"}
+  ],
+  "notes": "Dating by filing_year, the missing-class filter, the 5-year base and 3-year forward windows with year t excluded, the anti-join, NA for an empty base, 0 for an empty forward set, firm separation, dedup of firm_year, and the output columns all match the spec. build.R does not enforce the 1987-2015 focal range (that range comes only from the firm_year input) and treats empty-string subclasses as missing, which the spec does not state."
+}

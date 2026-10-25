@@ -63,6 +63,13 @@ run_rules <- function(builder, pc, fy, n_cases = 25, seed = 1, ref = NULL) {
   }, logical(1))
   res$R6_firms_separate <- all(r6)
 
+  # R10: repeating some firm-year rows on purpose changes nothing (Rule 11). Added 25 Oct 2026:
+  # the real firm-year list has no repeats, so without this rule a build that keeps repeats
+  # passes every check on clean input (change C09).
+  set.seed(seed)
+  fy_rep <- rbind(fy, fy[sample(.N, min(.N, 50L))])
+  res$R10_repeated_firm_years <- same_output(base_out, builder(pc, fy_rep))
+
   # R7-R9: properties of the output itself
   o <- as.data.table(base_out)
   res$R7_missing_iff_empty_base <- all(is.na(o$new_classes) == (o$n_base_classes == 0))

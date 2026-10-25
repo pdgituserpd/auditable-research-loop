@@ -1,0 +1,18 @@
+{
+  "verdict": "deviates from spec",
+  "deviations": [
+    {
+      "rule": "8 (Empty base)",
+      "line": 22,
+      "what": "When the base is empty, the anti-join against base keeps every forward class, so new_classes equals |F| instead of NA.",
+      "confidence": "high"
+    },
+    {
+      "rule": "8 (Empty base)",
+      "line": 30,
+      "what": "The line replaces every NA new_classes with 0, so an empty base yields 0 instead of NA, and new_classes is never NA, breaking the rule that it is NA exactly when n_base_classes is 0.",
+      "confidence": "high"
+    }
+  ],
+  "notes": "Everything else matches the spec: filing_year dating, first-listed and missing-class handling, the base window fy+1..fy+5 and forward window fy-1..fy-3 (so year t is in neither), the no-forward rule giving 0, firm-keyed joins, deduplication, and the output columns. Focal years come from the firm_year input, which the spec allows, and the empty-string check at line 12 is a reasonable reading of missing."
+}

@@ -26,9 +26,9 @@ Definition: [`spec/new_classes.md`](spec/new_classes.md).
 | Blind rebuild | Written by a separate AI agent from the definition only, in another language (Python) | `python/new_classes_blind.py` |
 | Fake firms | Small firms whose answers were worked out by hand | `tests/make_fixtures.R` |
 | Rules | Changes to the input with known effects on the output (duplicates, shuffles, year *t*, other firms...) | `tests/rules.R` |
-| Random hand-check | At least 100 random firm-years (plus about 10 tricky ones) worked out by a person from the raw patent list, with the windows left unmarked; one patent per case checked against the patent itself | `handcheck/` |
+| One worked case | The researcher walks one real firm-year through the slow build and the definition, step by step (decision D09). A random hand-check of 100+ cases is kept as a Stage 2 tool | `handcheck/` |
 | Planted bugs | Realistic mistakes put in on purpose; every layer is scored on which it catches | `R/mutants/` |
-| AI code review test | Whether an AI reviewer, given each buggy version, finds the bug | `ai_review/` |
+| AI code review test | A fresh AI agent reads the definition and one unlabeled build and reports any deviation; two rounds, with and without code comments | `ai_review/` |
 | Saved snapshot | Fingerprint of the approved output; later changes upstream are flagged | `logs/snapshots/` |
 | Run and change logs | Every run recorded automatically; every change after the plan logged with its reason | `logs/runs/`, `logs/changes.csv` |
 
@@ -48,7 +48,10 @@ python3 python/new_classes_blind.py --patent-class data/synthetic/patent_class.c
     --firm-year data/synthetic/firm_year.csv --out data/synthetic/out_blind.csv
 Rscript tests/run_all_checks.R          # writes report/catch_matrix.csv and a run record
 
-# random hand-check (100 random + 10 tricky by default; instructions in handcheck/HOW_TO.md)
+# one worked case, walked through the code (the prototype's hand-check, decision D09)
+Rscript handcheck/walkthrough.R <patent_class.csv> <firm_year.csv> [blind_output.csv]
+
+# random hand-check, kept for Stage 2 (100 random + 10 tricky by default; handcheck/HOW_TO.md)
 Rscript handcheck/make_worksheet.R <patent_class.csv> <firm_year.csv>
 # ...fill in handcheck/sheets/<source>_<date>_answers_TO_FILL.csv by hand (can be done in sittings), then:
 Rscript handcheck/compare_handcheck.R handcheck/sheets/<source>_<date>_answers_TO_FILL.csv <patent_class.csv> <firm_year.csv>

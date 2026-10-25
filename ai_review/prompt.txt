@@ -1,0 +1,11 @@
+You are a code reviewer. Folder: <folder>
+It holds spec.md (the written definition of a measure) and build.R (an R implementation of it). Your job: decide whether build.R implements spec.md exactly.
+
+Rules:
+- Read ONLY those two files. Do not open any other file or folder, do not search the file system, and do not run any code (no Rscript, no R, no Python). This is a reading review.
+- Check every rule in the spec against the code: dating, which codes count, missing classes, both windows and their exact year ranges, year t, the empty-base rule, the no-forward rule, firm separation, output rows and columns.
+- The code may be correct or may contain one or more deviations. Do not assume either.
+
+Write your result as JSON to <folder>/review_<model>.json with this shape:
+{"verdict": "matches spec" | "deviates from spec", "deviations": [{"rule": "<spec rule number or name>", "line": <line number>, "what": "<one sentence>", "confidence": "high"|"medium"|"low"}], "notes": "<one or two sentences>"}
+Then reply with the same JSON and nothing else.

@@ -1,0 +1,34 @@
+round,review_id,build,reviewer,verdict,correct_call,lines_flagged,rules_flagged
+round2_no_comments,N173,M10,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,12;12,4;6
+round2_no_comments,N300,M4,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,8,2
+round2_no_comments,N330,M3,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,10,1 (Dating)
+round2_no_comments,N488,M1,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,19,11 (Output)
+round2_no_comments,N534,correct,"Claude Haiku (subagent model setting ""haiku"")",matches spec,True,,
+round2_no_comments,N554,M8,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,9,3 (Missing class)
+round2_no_comments,N685,M7,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,17,10
+round2_no_comments,N792,M5,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,25;17,8 (empty base);8 (empty base)
+round2_no_comments,N836,M6,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,13;13,5;6
+round2_no_comments,N899,M2,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,12,4
+round2_no_comments,N936,M9,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,10,2
+round1_with_comments,R173,M10,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,16,4
+round1_with_comments,R173,M10,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,16,4 (Base set) and 6 (Year t itself)
+round1_with_comments,R300,M4,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,11,2
+round1_with_comments,R300,M4,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,11,2 (Class of a patent)
+round1_with_comments,R330,M3,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,13,1 (Dating)
+round1_with_comments,R330,M3,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,13,1 (Dating)
+round1_with_comments,R488,M1,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,24,11
+round1_with_comments,R488,M1,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,24,"11 (Output: one row per distinct firm_id, year; repeats collapsed)"
+round1_with_comments,R534,correct,"Claude Haiku (subagent model setting ""haiku"")",matches spec,True,,
+round1_with_comments,R534,correct,Claude Opus (configured session model claude-opus-5-5),matches spec,True,,
+round1_with_comments,R554,M8,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,12,3
+round1_with_comments,R554,M8,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,12,3 (Missing class)
+round1_with_comments,R685,M7,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,22,10
+round1_with_comments,R685,M7,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,22,10 (Firms are separate) / 7 (Measure)
+round1_with_comments,R792,M5,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,22;30,8 (Empty base);8 (Empty base)
+round1_with_comments,R792,M5,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,30,8 (Empty base)
+round1_with_comments,R836,M6,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,18,5
+round1_with_comments,R836,M6,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,18,5 (Forward set) and 6 (Year t itself)
+round1_with_comments,R899,M2,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,16,4 and 6
+round1_with_comments,R899,M2,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,16,4 (Base set) / 6 (Year t itself)
+round1_with_comments,R936,M9,"Claude Haiku (subagent model setting ""haiku"")",deviates from spec,True,13,2
+round1_with_comments,R936,M9,Claude Opus (configured session model claude-opus-5-5),deviates from spec,True,13,2 (Class of a patent)

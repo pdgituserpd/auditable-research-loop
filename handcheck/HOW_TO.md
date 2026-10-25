@@ -1,4 +1,21 @@
-# Random hand-check: how to fill in the sheet
+# Hand-check
+
+**For the prototype (decision D09): one worked case.** Run
+
+```bash
+Rscript handcheck/walkthrough.R data/real/A/patent_class.csv data/real/A/firm_year.csv data/real/A/out_blind.csv
+```
+
+It picks one real firm-year and writes `handcheck/results/walkthrough_<firm>_<year>.md`: the
+firm's raw patents, then each rule of the definition applied in turn, with a box to tick at each
+step. Read it next to `R/new_classes_slow.R` and `spec/new_classes.md`. The three builds'
+answers come last, so your own count comes first. About 10 minutes.
+
+**For Stage 2: the random hand-check below.** It is kept as a tool, not part of the prototype.
+
+---
+
+## Random hand-check (Stage 2): how to fill in the sheet
 
 You get two files in `handcheck/sheets/`:
 

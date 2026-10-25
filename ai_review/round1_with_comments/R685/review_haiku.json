@@ -1,0 +1,7 @@
+{
+  "verdict": "deviates from spec",
+  "deviations": [
+    {"rule": "10", "line": 22, "what": "The anti-join that builds new_classes matches forward classes on (year, cls) only, because the base table is reduced to those two columns before the join, so a class in any other firm's base set in that year removes it from firm i's new_classes count, an undercount that also violates the rule that removing another firm's patents changes nothing for this firm.", "confidence": "high"}
+  ],
+  "notes": "Every other rule checks out: filing_year dating, the cpc_seq == 0 filter and first_listed_only switch, exclusion of NA and empty subclasses, the base window fy+1..fy+5 and forward window fy-1..fy-3 with year t excluded from both, NA for empty base, 0 for empty forward, de-duplication of firm_year, and the output columns and order. The 1987-2015 focal-year setting is not enforced in code and is taken from whatever firm_year supplies, which I read as consistent with rule 11 but did not verify."
+}

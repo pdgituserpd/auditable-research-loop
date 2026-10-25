@@ -1,0 +1,7 @@
+{
+  "verdict": "deviates from spec",
+  "deviations": [
+    {"rule": "3 (Missing class)", "line": 9, "what": "Replaces each missing cpc_subclass with the literal string \"NA\" and keeps it as an ordinary class, so patents with a missing class add a class to both the base and forward sets, which the spec says must never happen.", "confidence": "high"}
+  ],
+  "notes": "All other rules check out: filing_year dating, the cpc_seq == 0 filter, base window fy+1 to fy+5, forward window fy-1 to fy-3, year t excluded, empty-base NA, no-forward 0, firm-keyed joins, and output columns and de-duplication. Two non-spec observations: with first_listed_only = FALSE, the in-place := on line 9 can modify the caller's data.table, and focal years 1987-2015 are not enforced inside the function but come from firm_year, which the output rule allows."
+}

@@ -1,0 +1,12 @@
+{
+  "verdict": "deviates from spec",
+  "deviations": [
+    {
+      "rule": "2",
+      "line": 13,
+      "what": "The class is set to the first three characters of cpc_subclass via substr(cpc_subclass, 1, 3), giving H04 instead of the four-character CPC subclass H04L that the spec defines as the class, so distinct subclasses collapse together and all class counts are too low.",
+      "confidence": "high"
+    }
+  ],
+  "notes": "The base window (filing years t-5 to t-1), forward window (t+1 to t+3), filing_year dating, first-listed filter, missing-class exclusion, anti-join for new classes, NA for empty base, 0 for no forward patents, de-duplication and output columns all match the spec. The focal-year range 1987-2015 is not enforced here because firm_year is supplied by the caller, and the header cites spec/new_classes.md instead of spec.md."
+}

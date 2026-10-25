@@ -1,6 +1,6 @@
 build,crashed,data_checks,fake_firms,rules,slow_version,blind_rebuild,snapshot,rules_failed,share_agree_slow,name,based_on,caught_by_any,n_layers_caught
 correct build,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,"",1,,,FALSE,0
-M1,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,R9_one_row_per_firm_year,1,Duplicate firm-years in the output (no de-duplication of the firm-year list),WRDS duplicate firm-years (E01),TRUE,5
+M1,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,R10_repeated_firm_years; R9_one_row_per_firm_year,1,Duplicate firm-years in the output (no de-duplication of the firm-year list),WRDS duplicate firm-years (E01),TRUE,5
 M2,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,R5_year_t_ignored,0.8988,Base window includes year t (t-5 to t),Common timing mistake,TRUE,5
 M3,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,R4_new_class_adds_one; R5_year_t_ignored,0.561,Grant year used instead of filing year,Common in patent studies,TRUE,5
 M4,FALSE,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,"",0.616,"Every code on the patent counted, not only the first-listed",Common in patent studies,TRUE,4

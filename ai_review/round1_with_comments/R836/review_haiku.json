@@ -1,0 +1,12 @@
+{
+  "verdict": "deviates from spec",
+  "deviations": [
+    {
+      "rule": "5",
+      "line": 18,
+      "what": "The forward window is built as fy - 0:(forward_years - 1L), giving focal years fy, fy-1, fy-2 instead of the spec's fy-1, fy-2, fy-3, so a filing in year t enters F(t) (also breaking rule 6) and filings in year t+3 are dropped from F(t).",
+      "confidence": "high"
+    }
+  ],
+  "notes": "Only one deviation found, the off-by-one forward offset on line 18; the code's own comment on line 17 states the correct window. Dating, the cpc_seq == 0 and missing-class filters, the base window (line 16), the anti-join for new_classes, the NA and zero rules, deduplication and output columns match the spec, and treating an empty-string subclass as missing on line 12 is a reasonable reading of 'missing'."
+}
