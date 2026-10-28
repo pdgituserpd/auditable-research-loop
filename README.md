@@ -23,12 +23,12 @@ Definition: [`spec/new_classes.md`](spec/new_classes.md).
 | Data checks | One row per firm-year, row counts, value ranges, missing values | `R/checks.R` |
 | Fast build | The normal, vectorized version (R) | `R/new_classes_fast.R` |
 | Slow, plain build | Follows the definition line by line, for a person to read against it (R) | `R/new_classes_slow.R` |
-| Blind rebuild | Written by a separate AI agent from the definition only, in another language (Python) | `python/new_classes_blind.py` |
+| Blind rebuild | Written by a separate AI agent (a Claude model) from the definition only, in another language (Python) | `python/new_classes_blind.py` |
 | Fake firms | Small firms whose answers were worked out by hand | `tests/make_fixtures.R` |
 | Rules | Changes to the input with known effects on the output (duplicates, shuffles, year *t*, other firms...) | `tests/rules.R` |
 | One worked case | The researcher walks one real firm-year through the slow build and the definition, step by step (decision D09). A random hand-check of 100+ cases is kept as a Stage 2 tool | `handcheck/` |
 | Planted bugs | Realistic mistakes put in on purpose; every layer is scored on which it catches | `R/mutants/` |
-| AI code review test | A fresh AI agent reads the definition and one unlabeled build and reports any deviation; two rounds, with and without code comments | `ai_review/` |
+| AI code review test | A fresh AI agent reads the definition and one unlabeled build and reports any deviation; two rounds, with and without code comments. Both reviewers are Claude models, so this prototype does not test independence across model families | `ai_review/` |
 | Saved snapshot | Fingerprint of the approved output; later changes upstream are flagged | `logs/snapshots/` |
 | Run and change logs | Every run recorded automatically; every change after the plan logged with its reason | `logs/runs/`, `logs/changes.csv` |
 
