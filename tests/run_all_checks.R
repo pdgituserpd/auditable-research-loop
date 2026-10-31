@@ -1,9 +1,10 @@
-# Runs every check layer on the correct build and on each planted bug, and writes the
-# "catch matrix": which layers caught which bug. Also writes a run record to logs/runs/.
+# Runs every check on the correct fast version and on each of the ten deliberate bugs, and writes
+# the results table ("catch matrix"): one row per version, one column per check, TRUE where the
+# check flagged that version. Also writes a run record to logs/runs/.
 # Usage (repo root): Rscript tests/run_all_checks.R [patent_class.csv] [firm_year.csv] [blind_output.csv] [snapshot.txt] [catch_matrix.csv]
 
 suppressPackageStartupMessages({ library(data.table) })
-for (f in c("R/runlog.R", "R/checks.R", "R/io.R", "R/new_classes_fast.R", "R/new_classes_slow.R", "tests/rules.R")) source(f)
+for (f in c("R/runlog.R", "R/checks.R", "R/io.R", "R/new_classes_fast.R", "R/new_classes_slow.R", "tests/input_tests.R")) source(f)
 
 args <- commandArgs(trailingOnly = TRUE)
 pc_path <- if (length(args) >= 1) args[1] else "data/synthetic/patent_class.csv"
@@ -30,26 +31,26 @@ layers <- function(builder, label) {
   # L1: data checks on the output (silent: results are kept, not printed)
   op <- options(checks.silent = label != "correct build"); chk <- check_new_classes_output(out, fy); options(op)
   l1 <- all(vapply(chk, function(x) isTRUE(x$passed), logical(1)))
-  # L2: fake firms with hand-set answers
+  # L2: fake firms, whose answers were worked out from the definition before any version was run
   fo <- as.data.table(builder(fx_pc, fx_fy))
   m <- merge(fx_ex, fo, by = c("firm_id", "year"), suffixes = c("_exp", ""), all.x = TRUE)
   eq <- function(a, b) (is.na(a) & is.na(b)) | (!is.na(a) & !is.na(b) & a == b)
   l2 <- nrow(fo) == nrow(fx_ex) && all(eq(m$new_classes_exp, m$new_classes)) &&
         all(eq(m$n_base_classes_exp, m$n_base_classes)) && all(eq(m$n_forward_classes_exp, m$n_forward_classes))
-  # L3: rules the output must obey
-  rl <- run_rules(builder, pc, fy, ref = slow)
+  # L3: input tests T1-T10
+  rl <- run_input_tests(builder, pc, fy, ref = slow)
   l3 <- all(rl)
-  # L4: agreement with the slow, plain version
+  # L4: agreement with the slow version
   c4 <- compare_outputs(out, slow, label, "slow")
   l4 <- nrow(out) == nrow(slow) && c4$n_agree == c4$n
-  # L5: agreement with the blind rebuild (another model, other language, from the spec only)
+  # L5: agreement with the blind rebuild (Python, written by a separate AI agent from the definition only)
   l5 <- if (is.null(blind)) NA else { c5 <- compare_outputs(out, blind, label, "blind"); nrow(out) == nrow(blind) && c5$n_agree == c5$n }
-  # L6: saved snapshot of the approved output
+  # L6: the output's checksum must match the saved checksum of the approved output
   l6 <- if (is.na(snapshot)) NA else identical(data_hash(out[order(firm_id, year)]), snapshot)
   data.table(build = label, crashed = FALSE,
-             data_checks = !l1, fake_firms = !l2, rules = !l3, slow_version = !l4,
+             data_checks = !l1, fake_firms = !l2, input_tests = !l3, slow_version = !l4,
              blind_rebuild = !l5, snapshot = !l6,
-             rules_failed = paste(names(rl)[!rl], collapse = "; "),
+             input_tests_failed = paste(names(rl)[!rl], collapse = "; "),
              share_agree_slow = round(c4$share, 4))
 }
 
@@ -61,7 +62,7 @@ for (i in seq_len(nrow(idx))) {
 }
 mat <- rbindlist(res, fill = TRUE)
 mat <- merge(mat, idx[, .(build = id, name, based_on)], by = "build", all.x = TRUE, sort = FALSE)
-lay <- c("data_checks", "fake_firms", "rules", "slow_version", "blind_rebuild", "snapshot")
+lay <- c("data_checks", "fake_firms", "input_tests", "slow_version", "blind_rebuild", "snapshot")
 mat[, caught_by_any := Reduce(`|`, lapply(.SD, function(x) isTRUE(x) | (!is.na(x) & x))), .SDcols = lay]
 mat[, n_layers_caught := rowSums(as.matrix(.SD) == TRUE, na.rm = TRUE), .SDcols = lay]
 
@@ -74,5 +75,5 @@ log_output("catch_matrix", mat)
 log_output("new_classes_correct_build", as.data.table(build_new_classes_fast(pc, fy)))
 rec <- end_run()
 
-print(mat[, c("build", lay, "n_layers_caught", "rules_failed"), with = FALSE])
+print(mat[, c("build", lay, "n_layers_caught", "input_tests_failed"), with = FALSE])
 cat("\nRun record:", rec$path, "| failed checks:", rec$failed, "\n")

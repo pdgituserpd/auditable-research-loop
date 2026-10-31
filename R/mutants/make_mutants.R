@@ -1,6 +1,7 @@
-# Planted bugs: realistic mistakes, each made by changing one thing in the fast build.
-# The tests must catch each one. Run from the repo root: Rscript R/mutants/make_mutants.R
-# Each mutant is written to its own file so it can also be handed to an AI reviewer as-is.
+# Deliberate bugs (M1-M10): ten realistic mistakes, each made by changing one line of the fast
+# version. The checks must catch each one. Run from the repository folder:
+#   Rscript R/mutants/make_mutants.R
+# Each bug goes in its own file, so the file can also be handed to an AI reviewer as it is.
 
 src <- readLines("R/new_classes_fast.R")
 txt <- paste(src, collapse = "\n")

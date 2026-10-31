@@ -1,5 +1,6 @@
-# Run log: every run writes one JSON record to logs/runs/, automatically.
-# A run that is skipped leaves a gap in the sequence, so runs can't be quietly dropped.
+# Run log: every run writes one record (a JSON file) to logs/runs/ automatically, with the time,
+# the code version, the R version, the settings, a checksum of each input file, every check with
+# its result, and a checksum of each output.
 
 suppressPackageStartupMessages({ library(jsonlite) })
 
@@ -11,7 +12,8 @@ file_hash <- function(path) {
 }
 
 data_hash <- function(dt) {
-  # Order-independent fingerprint of a table's content
+  # Checksum (MD5) of a table's content: a 32-character code computed from every value. Rows are
+  # sorted first, so row order doesn't change it, and any change to any value gives a different code.
   d <- as.data.frame(dt)
   d <- d[do.call(order, unname(as.list(d))), , drop = FALSE]
   tf <- tempfile(fileext = ".csv")

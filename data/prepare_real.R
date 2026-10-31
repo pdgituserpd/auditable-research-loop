@@ -1,9 +1,9 @@
 # Builds the measure's two inputs (patent_class, firm_year) from public data only:
 # PatentsView bulk tables and DISCERN 2.0.1 (Arora et al. 2024, https://zenodo.org/records/13619821).
 #
-# The steps follow the researcher's existing DISCERN 2.0 / PatentsView pipeline (its
-# 01_prepare_patents.R), which is the precedent for every choice here. Where this script departs
-# from it, the comment says so and why.
+# The steps follow the researcher's own DISCERN 2.0 / PatentsView pipeline (its
+# 01_prepare_patents.R), which sets every choice here. Where this script differs from that
+# pipeline, the comment says so and why.
 #
 # Usage (repo root):
 #   Rscript data/prepare_real.R <raw_dir> [link_rule] [out_dir]
@@ -30,7 +30,7 @@ dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 FILING_MIN <- 1982L; FILING_MAX <- 2018L      # decision D06: base from 1982, forward window ends 2018
 FOCAL      <- 1987:2015                       # decision D06
-GRANT_MAX  <- as.IDate("2024-12-31")          # same observation cutoff as the precedent pipeline
+GRANT_MAX  <- as.IDate("2024-12-31")          # same cutoff as the researcher's pipeline
 
 disc <- file.path(raw_dir, "discern")
 inputs <- c(file.path(raw_dir, c("g_patent.tsv.zip", "g_application.tsv.zip", "g_cpc_current.tsv.zip")),
@@ -55,7 +55,7 @@ read_zip <- function(file, cols) {
         colClasses = list(character = "patent_id"), showProgress = FALSE)
 }
 
-# ---- 1. Granted utility patents and their filing dates (as in the precedent) -------------------
+# ---- 1. Granted utility patents and their filing dates (as in the researcher's pipeline) -------------------
 p <- read_zip("g_patent.tsv.zip", c("patent_id", "patent_type", "patent_date", "withdrawn"))
 note("g_patent: all records", nrow(p), uniqueN(p$patent_id))
 p <- p[patent_type == "utility" & withdrawn == 0L]
@@ -77,7 +77,7 @@ note("filing date after grant date (kept, flagged as in precedent)", p[filing_da
 rm(app); invisible(gc())
 
 # ---- 2. DISCERN firm identifiers -------------------------------------------------------------
-# PERMNO_ADJ (DISCERN's firm ID) to GVKEY, one row per fiscal year (as in precedent)
+# PERMNO_ADJ (DISCERN's firm ID) to GVKEY, one row per fiscal year (as in the researcher's pipeline)
 cross <- fread(file.path(disc, "permno_gvkey.csv"), colClasses = list(character = "gvkey"))
 cross <- cross[!is.na(fyear1_adjust) & !is.na(fyearn_adjust) & fyear1_adjust <= fyearn_adjust]
 cross <- unique(cross[, .(fyear = seq.int(fyear1_adjust, fyearn_adjust)), by = .(gvkey, permno_adj, fyear1_adjust, fyearn_adjust)][
@@ -86,7 +86,7 @@ cross <- unique(cross[, .(fyear = seq.int(fyear1_adjust, fyearn_adjust)), by = .
 # Patent-to-firm links
 if (link_rule == "A") {
   # A1. Official application owner. DISCERN's application file already carries the firm and the
-  #     fiscal year at filing, so no licensed data is needed (as in precedent).
+  #     fiscal year at filing, so no licensed data is needed (as in the researcher's pipeline).
   a <- fread(file.path(disc, "discern_pat_app_1980_2021.csv"),
              select = c("patent_id", "permno_adj", "fyear"), colClasses = list(character = "patent_id"))
   a <- a[!is.na(patent_id) & nzchar(patent_id)]
@@ -95,7 +95,7 @@ if (link_rule == "A") {
   note("A1 links: official application owner", nrow(a), uniqueN(a$patent_id), uniqueN(a$gvkey))
 
   # A2. Grant-name match mapped to the name's owner at filing.
-  #     DEPARTURE from precedent: the precedent picks the filing FISCAL year with each firm's
+  #     DIFFERENCE from the researcher's pipeline: the pipeline picks the filing FISCAL year with each firm's
   #     fiscal-year-end month from Compustat, which is licensed and cannot be shared. Here the
   #     calendar filing year is used. This is exact for firms whose fiscal year ends in December.
   #     data/compare_links.R measures how often the two choices differ.
@@ -134,7 +134,7 @@ note(sprintf("links with filing year %d-%d", FILING_MIN, FILING_MAX), nrow(links
 multi <- links[, uniqueN(gvkey), by = patent_id][V1 > 1, .N]
 note("patents linked to more than one firm (each firm counts it)", multi, multi)
 
-# ---- 3. CPC subclasses (current, retrospective classification, as in precedent) --------------
+# ---- 3. CPC subclasses (as currently assigned, as in the researcher's pipeline) --------------
 cpc <- read_zip("g_cpc_current.tsv.zip", c("patent_id", "cpc_sequence", "cpc_subclass"))
 note("g_cpc_current: all codes", nrow(cpc), uniqueN(cpc$patent_id))
 cpc <- cpc[patent_id %chin% links$patent_id]

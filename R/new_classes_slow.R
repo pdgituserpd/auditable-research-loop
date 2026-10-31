@@ -1,6 +1,6 @@
-# Slow, plain version of the same measure: follows spec/new_classes.md line by line,
-# with simple loops and no clever tricks, so a person can read it against the definition.
-# It is deliberately written without data.table.
+# Slow version of the same measure. It goes one firm-year at a time and follows the definition
+# (spec/new_classes.md) line by line with simple loops, so a person can read it against the rules.
+# It is written without data.table on purpose.
 
 build_new_classes_slow <- function(patent_class, firm_year,
                                    base_years = 5, forward_years = 3,

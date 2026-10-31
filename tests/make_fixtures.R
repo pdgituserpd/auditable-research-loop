@@ -1,7 +1,7 @@
-# Fake firms with answers set by hand (planted truth).
-# Each firm tests one case from the spec. The expected values below were worked out
-# by hand from spec/new_classes.md, not computed by any of the builds.
-# Run from the repo root: Rscript tests/make_fixtures.R
+# Fake firms: 15 invented firms with one to six made-up patents each. Each firm tests one tricky case
+# from the definition. The expected answers below were worked out from the rules in
+# spec/new_classes.md before any version of the measure was run, and no code computed them.
+# Run from the repository folder: Rscript tests/make_fixtures.R
 
 row <- function(patent_id, firm_id, filing_year, grant_year, cpc_seq, cpc_subclass)
   data.frame(patent_id, firm_id, filing_year, grant_year, cpc_seq, cpc_subclass, stringsAsFactors = FALSE)

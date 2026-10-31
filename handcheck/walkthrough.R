@@ -1,10 +1,10 @@
 # One worked case, walked through the code (decision D09).
 #
-# Picks one real firm-year and prints, step by step, what the slow plain build
-# (R/new_classes_slow.R) does with it: the raw patents, the rows each rule keeps, the base set,
-# the forward set and the result. The researcher reads this next to the slow build and the
-# definition (spec/new_classes.md) and confirms each step by hand. The fast build's and the
-# blind rebuild's answers are printed last, so the hand reading comes first.
+# Picks one real firm-year and writes, step by step, what the slow version (R/new_classes_slow.R)
+# does with it: the raw patents, the rows each rule keeps, the base set, the forward set and the
+# result. The researcher reads this next to the slow version and the definition
+# (spec/new_classes.md) and confirms each step by hand. The three versions' answers come last, so
+# the researcher's own count comes first.
 #
 # Usage (repo root):
 #   Rscript handcheck/walkthrough.R <patent_class.csv> <firm_year.csv> [blind_output.csv] [seed]
@@ -54,48 +54,49 @@ tbl <- function(d) {
 }
 
 p("# Worked case: firm ", f, ", focal year ", t); p("")
-p("Read this next to `R/new_classes_slow.R` and `spec/new_classes.md`. Tick each step when your own count agrees."); p("")
-p("Patents are linked to the firm by rule A (decision D11). Each patent number links to its Google Patents page, if you want to check one against the source."); p("")
-p("## Step 0. Every code on every patent this firm filed from ", t - 6, " to ", t + 4); p("")
+p("Read this next to the slow version (`R/new_classes_slow.R`) and the definition (`spec/new_classes.md`). Count each step yourself, and tick its box when your count agrees."); p("")
+p("Patents are linked to the firm by rule A (decision D11). Each patent number links to the patent's page on Google Patents, so you can check any of them against the source."); p("")
+p("## Step 0. Every code on every patent the firm filed from ", t - 6, " to ", t + 4); p("")
+p("`cpc_seq` is the code's position on the patent: 0 for the first code listed, 1 for the second, and so on."); p("")
 tbl(x[, .(patent = sprintf("[%s](https://patents.google.com/patent/US%s)", patent_id, patent_id), filing_year, grant_year, cpc_seq, cpc_subclass)])
 
-p("## Step 1. Rule 2: keep only the first-listed code (cpc_seq = 0)"); p("")
+p("## Step 1. Rule 2: keep only each patent's first code (cpc_seq = 0)"); p("")
 s1 <- x[cpc_seq == 0L]
 p("- [ ] ", nrow(x), " rows become ", nrow(s1), " rows, one per patent."); p("")
-p("## Step 2. Rule 3: drop rows with a missing subclass"); p("")
+p("## Step 2. Rule 3: drop rows with a blank class"); p("")
 s2 <- s1[!is.na(cpc_subclass) & cpc_subclass != ""]
-p("- [ ] ", nrow(s1) - nrow(s2), " row(s) dropped; ", nrow(s2), " remain."); p("")
+p("- [ ] ", nrow(s1) - nrow(s2), " row(s) dropped, ", nrow(s2), " left."); p("")
 
 p("## Step 3. Rule 4: base window, patents filed ", t - 5, " to ", t - 1); p("")
 bw <- s2[filing_year >= t - 5 & filing_year <= t - 1]
 tbl(bw[, .(patent_id, filing_year, cpc_subclass)])
 B <- sort(unique(bw$cpc_subclass))
-p("- [ ] Base set B = {", paste(B, collapse = ", "), "}: ", length(B), " subclasses."); p("")
+p("- [ ] Base set B = {", paste(B, collapse = ", "), "}, ", length(B), " classes."); p("")
 
 p("## Step 4. Rule 5: forward window, patents filed ", t + 1, " to ", t + 3); p("")
 fw <- s2[filing_year >= t + 1 & filing_year <= t + 3]
 tbl(fw[, .(patent_id, filing_year, cpc_subclass)])
 Fs <- sort(unique(fw$cpc_subclass))
-p("- [ ] Forward set F = {", paste(Fs, collapse = ", "), "}: ", length(Fs), " subclasses."); p("")
+p("- [ ] Forward set F = {", paste(Fs, collapse = ", "), "}, ", length(Fs), " classes."); p("")
 
-p("## Step 5. Rule 6: patents filed in ", t, " itself, and in ", t - 6, " and ", t + 4, ", are in neither window"); p("")
+p("## Step 5. Rule 6: patents filed in ", t, " itself, and in ", t - 6, " and ", t + 4, ", belong to neither window"); p("")
 tbl(s2[filing_year %in% c(t - 6, t, t + 4), .(patent_id, filing_year, cpc_subclass)])
-p("- [ ] None of these rows appear in Step 3 or Step 4."); p("")
+p("- [ ] None of these rows appears in Step 3 or Step 4."); p("")
 
-p("## Step 6. Rule 7: subclasses in F that are not in B"); p("")
+p("## Step 6. Rule 7: classes in F that are not in B"); p("")
 N <- setdiff(Fs, B)
-p("- [ ] New = {", paste(N, collapse = ", "), "}: **new_classes = ", if (length(B) == 0) "NA" else length(N), "**."); p("")
+p("- [ ] New = {", paste(N, collapse = ", "), "}, so **new_classes = ", if (length(B) == 0) "NA" else length(N), "**."); p("")
 
 slow <- as.data.table(build_new_classes_slow(mine_all, data.table(firm_id = f, year = t)))
 fast <- build_new_classes_fast(mine_all, data.table(firm_id = f, year = t))
-p("## Step 7. What the three builds report (read after your own count)"); p("")
-res <- data.table(build = c("slow plain build (R)", "fast build (R)"),
+p("## Step 7. What the three versions report (read this after your own count)"); p("")
+res <- data.table(version = c("slow version (R)", "fast version (R)"),
                   n_base_classes = c(slow$n_base_classes, fast$n_base_classes),
                   n_forward_classes = c(slow$n_forward_classes, fast$n_forward_classes),
                   new_classes = c(slow$new_classes, fast$new_classes))
 if (!is.na(blind_path) && file.exists(blind_path)) {
   bl <- fread(blind_path, colClasses = c(firm_id = "character"), na.strings = c("NA", ""))[firm_id == f & year == t]
-  res <- rbind(res, data.table(build = "blind rebuild (Python)", n_base_classes = bl$n_base_classes,
+  res <- rbind(res, data.table(version = "blind rebuild (Python)", n_base_classes = bl$n_base_classes,
                                n_forward_classes = bl$n_forward_classes, new_classes = bl$new_classes))
 }
 tbl(res)

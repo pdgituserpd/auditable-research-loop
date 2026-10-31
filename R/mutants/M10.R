@@ -1,6 +1,7 @@
 # PLANTED BUG M10: Base window shifted one year (t-4 to t)
-# Fast (vectorized) build of the new-technology-classes measure.
-# Specification: spec/new_classes.md
+# Fast version of the new-technology-classes measure. It handles all firms at once with table
+# joins (data.table), which is quick on large data but harder to read than the slow version in
+# R/new_classes_slow.R. Definition: spec/new_classes.md
 
 suppressPackageStartupMessages({ library(data.table) })
 
@@ -9,13 +10,13 @@ build_new_classes_mutant <- function(patent_class, firm_year,
                                    first_listed_only = TRUE) {
   pc <- as.data.table(patent_class)
   if (first_listed_only) pc <- pc[cpc_seq == 0L]
-  # one row per firm x filing year x class; missing classes contribute nothing
+  # One row per firm, filing year and class. A blank class adds nothing (rule 3).
   pc <- unique(pc[!is.na(cpc_subclass) & cpc_subclass != "",
                   .(firm_id, fy = as.integer(filing_year), cls = cpc_subclass)])
 
-  # a class filed in year fy is in the base of focal years fy+1 .. fy+base_years
+  # A class filed in year fy is in the base window of focal years fy+1 to fy+base_years (rule 4)
   base <- unique(pc[, .(year = fy + 0:(base_years - 1L)), by = .(firm_id, cls, fy)][, .(firm_id, year, cls)])
-  # ... and in the forward window of focal years fy-forward_years .. fy-1
+  # and in the forward window of focal years fy-forward_years to fy-1 (rule 5)
   fwd  <- unique(pc[, .(year = fy - seq_len(forward_years)), by = .(firm_id, cls, fy)][, .(firm_id, year, cls)])
 
   n_base <- base[, .(n_base_classes = .N), by = .(firm_id, year)]

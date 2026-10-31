@@ -1,12 +1,12 @@
-build,crashed,data_checks,fake_firms,rules,slow_version,blind_rebuild,snapshot,rules_failed,share_agree_slow,name,based_on,caught_by_any,n_layers_caught
+build,crashed,data_checks,fake_firms,input_tests,slow_version,blind_rebuild,snapshot,input_tests_failed,share_agree_slow,name,based_on,caught_by_any,n_layers_caught
 correct build,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,"",1,,,FALSE,0
-M1,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,R10_repeated_firm_years,1,Duplicate firm-years in the output (no de-duplication of the firm-year list),WRDS duplicate firm-years (E01),TRUE,1
-M2,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,R5_year_t_ignored,0.8978,Base window includes year t (t-5 to t),Common timing mistake,TRUE,5
-M3,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,R4_new_class_adds_one; R5_year_t_ignored,0.6991,Grant year used instead of filing year,Common in patent studies,TRUE,5
+M1,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,T10_repeated_firm_years,1,Duplicate firm-years in the output (no de-duplication of the firm-year list),WRDS duplicate firm-years (E01),TRUE,1
+M2,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,T5_year_t_ignored,0.8978,Base window includes year t (t-5 to t),Common timing mistake,TRUE,5
+M3,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,T4_new_class_adds_one; T5_year_t_ignored,0.6991,Grant year used instead of filing year,Common in patent studies,TRUE,5
 M4,FALSE,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,"",0.8294,"Every code on the patent counted, not only the first-listed",Common in patent studies,TRUE,4
-M5,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,R7_missing_iff_empty_base,0.3763,Empty base coded as 0 instead of missing,Common missing-value mistake,TRUE,6
-M6,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,R5_year_t_ignored,0.8656,Forward window shifted to t to t+2,Common timing mistake,TRUE,5
-M7,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,R6_firms_separate,0.8155,Firms mixed: base classes pooled across firms (firm left out of the join key),Common linking mistake,TRUE,5
+M5,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,T7_missing_iff_empty_base,0.3763,Empty base coded as 0 instead of missing,Common missing-value mistake,TRUE,6
+M6,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,T5_year_t_ignored,0.8656,Forward window shifted to t to t+2,Common timing mistake,TRUE,5
+M7,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,T6_firms_separate,0.8155,Firms mixed: base classes pooled across firms (firm left out of the join key),Common linking mistake,TRUE,5
 M8,FALSE,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,"",0.9999,Missing class counted as a class,Common missing-value mistake,TRUE,4
-M10,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,R3_known_class_in_forward; R5_year_t_ignored,0.8685,Base window shifted one year (t-4 to t),Common timing mistake,TRUE,4
+M10,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,T3_known_class_in_forward; T5_year_t_ignored,0.8685,Base window shifted one year (t-4 to t),Common timing mistake,TRUE,4
 M9,FALSE,FALSE,TRUE,FALSE,TRUE,TRUE,TRUE,"",0.8714,Class cut to three characters (A01B and A01C treated as one class),Common string mistake,TRUE,4
