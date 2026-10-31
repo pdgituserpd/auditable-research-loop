@@ -1,0 +1,5 @@
+item,what_it_covers,date,approved_by,status
+Planted bug list,"The ten deliberate bugs M1-M10 in R/mutants/index.csv, as rebuilt on 30 Oct for definition version 0.3",2026-10-31,Pouya,approved
+Worked case,"handcheck/results/walkthrough_062738_1997.md (firm 062738, focal year 1997)",,,waiting
+Saved checksums,"logs/snapshots/new_classes_synthetic.txt and logs/snapshots/new_classes_real_A.txt (definition version 0.3)",,,waiting (after the worked case)
+License,"The license for the code in this repository",,,waiting

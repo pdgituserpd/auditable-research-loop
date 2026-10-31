@@ -89,6 +89,7 @@ Two words used throughout:
 | File | What it is |
 |---|---|
 | `decisions.csv` | The decision log: every choice the definition leaves open (D01 to D15), with the options, the choice, the reason, the published precedent, who decided and whether it is settled |
+| `approvals.csv` | The researcher's one-time sign-offs that aren't decisions or changes: the planted bug list, the worked case, the saved checksums and the license, each with its date |
 | `changes.csv` | The change log: every change made after the plan (C01 onward), with its class, its reason, whether it came before or after results, the two tests every change must pass, and who approved it |
 | `runs/*.json` | One record per run, written automatically: time, code version, R version, settings, a checksum of each input file, every check with its result, and a checksum of each output. The file name is the run's date and time |
 | `snapshots/new_classes_synthetic.txt`, `snapshots/new_classes_real_A.txt` | The saved checksum of the approved output, on the made-up data and on the real data. A checksum is a 32-character code computed from every value in the table, so any change to any value gives a different code. Each later run compares its output with it |
