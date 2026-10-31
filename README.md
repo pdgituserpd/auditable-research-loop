@@ -103,3 +103,8 @@ Rscript handcheck/walkthrough.R data/real/A/patent_class.csv data/real/A/firm_ye
   public downloads in about three minutes.
 - Licensed data such as Compustat, and anything built from it. The link comparison keeps only counts.
 - The researcher's own pipeline, prompts and paper code.
+
+## License and citation
+
+The code is under the MIT license (`LICENSE`). If you use it, please cite it as shown in
+`CITATION.cff` (GitHub's "Cite this repository" button).

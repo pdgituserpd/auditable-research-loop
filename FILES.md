@@ -17,6 +17,8 @@ Two words used throughout:
 |---|---|
 | `README.md` | Front page: what the prototype is, the list of checks, results, how to rerun everything |
 | `FILES.md` | This guide |
+| `LICENSE` | The MIT license: anyone may reuse the code as long as they keep the copyright notice |
+| `CITATION.cff` | How to cite this repository. GitHub reads it and shows a "Cite this repository" button |
 | `.gitignore` | Tells Git which files to leave out of the repository (the real data, which the scripts rebuild, and hand-check worksheets in progress) |
 
 ## `spec/`: the definition
