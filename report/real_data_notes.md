@@ -13,8 +13,8 @@ row counts after each preparation step are in `report/real_prep_log_A.csv`.
   code on a patent would include Y codes.
 - 157,180 firm-years: every year from 1987 to 2015 for each firm (decision D08). 62% of them have
   an empty base window and so no value. Within the years each firm appears in DISCERN's public firm
-  panel (65,799 firm-years), 27% have no value. Decision D15, still open, asks which of the two
-  sets of firm-years to use.
+  panel (65,799 firm-years), 27% have no value. Decision D15 keeps all the firm-years, because a
+  study linked to Compustat drops the years a firm isn't publicly traded anyway.
 
 ## Link check
 
