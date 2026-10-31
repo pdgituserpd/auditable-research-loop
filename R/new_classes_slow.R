@@ -23,8 +23,8 @@ build_new_classes_slow <- function(patent_class, firm_year,
     in_base <- mine$filing_year >= t - base_years & mine$filing_year <= t - 1
     base_set <- unique(mine$cpc_subclass[in_base])
 
-    # Rule 5: forward window t+1 .. t+3
-    in_fwd <- mine$filing_year >= t + 1 & mine$filing_year <= t + forward_years
+    # Rules 5 and 6: forward window t .. t+2, year t included
+    in_fwd <- mine$filing_year >= t & mine$filing_year <= t + forward_years - 1
     fwd_set <- unique(mine$cpc_subclass[in_fwd])
 
     # Rule 7: classes in the forward set that are not in the base set

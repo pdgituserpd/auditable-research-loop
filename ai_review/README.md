@@ -1,7 +1,10 @@
 # AI code-review test
 
 This test asks whether an AI reviewer, given the definition and one version of the code, can tell
-whether that version follows the definition. It was run on 25 Oct 2026.
+whether that version follows the definition. It was run on 25 Oct 2026 with definition version 0.1,
+when the forward window was *t*+1 to *t*+3. Its folders keep the versions the reviewers saw. Since
+30 Oct (change C13) the forward window is *t* to *t*+2, so bug M6 in this test ("forward window
+shifted to *t* to *t*+2") is now the correct rule, and the current M6 is the old rule.
 
 ## How it was run
 

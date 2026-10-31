@@ -16,8 +16,8 @@ build_new_classes_mutant <- function(patent_class, firm_year,
 
   # A class filed in year fy is in the base window of focal years fy+1 to fy+base_years (rule 4)
   base <- unique(pc[, .(year = fy + seq_len(base_years)), by = .(firm_id, cls, fy)][, .(firm_id, year, cls)])
-  # and in the forward window of focal years fy-forward_years to fy-1 (rule 5)
-  fwd  <- unique(pc[, .(year = fy - seq_len(forward_years)), by = .(firm_id, cls, fy)][, .(firm_id, year, cls)])
+  # and in the forward window of focal years fy-forward_years+1 to fy (rules 5 and 6)
+  fwd  <- unique(pc[, .(year = fy - 0:(forward_years - 1L)), by = .(firm_id, cls, fy)][, .(firm_id, year, cls)])
 
   n_base <- base[, .(n_base_classes = .N), by = .(firm_id, year)]
   n_fwd  <- fwd[,  .(n_forward_classes = .N), by = .(firm_id, year)]

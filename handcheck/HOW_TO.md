@@ -9,7 +9,7 @@ Rscript handcheck/walkthrough.R data/real/A/patent_class.csv data/real/A/firm_ye
 ```
 
 The script picks one real firm-year and writes `handcheck/results/walkthrough_<firm>_<year>.md`.
-The file lists every patent the firm filed from six years before the focal year to four years
+The file lists every patent the firm filed from six years before the focal year to three years
 after it, each with a link to the patent on Google Patents. Then it applies the definition's rules
 one at a time, with a box to tick at each step. Read it next to the slow version
 (`R/new_classes_slow.R`) and the definition (`spec/new_classes.md`), and count each step yourself.
@@ -22,7 +22,7 @@ This tool is kept for later and isn't used in the prototype. `make_worksheet.R` 
 firm-years and about 10 tricky ones, and writes two files in `handcheck/sheets/`:
 
 - `<source>_<date>_patents.csv` lists, for each case, every patent the firm filed from *t*-6 to
-  *t*+4, with its filing year and the class of its first-listed code. The windows are left
+  *t*+3, with its filing year and the class of its first-listed code. The windows are left
   unmarked on purpose, so a window mistake in the code can't be copied into the sheet.
 - `<source>_<date>_answers_TO_FILL.csv` has one row per case, with blank columns for your answers.
 
@@ -33,9 +33,9 @@ Neither file contains the code's answers. Don't run the code until you finish.
 1. Filter the patents file to the case (`case_id`) and sort it by `filing_year`.
 2. Base window: patents filed from *t*-5 to *t*-1. Count the distinct classes. A blank class
    doesn't count. Enter the number in `your_base_classes`.
-3. Forward window: patents filed from *t*+1 to *t*+3. Count the distinct classes and enter the
-   number in `your_forward_classes`.
-4. Patents filed in year *t*, in *t*-6 or in *t*+4 belong to neither window.
+3. Forward window: patents filed from *t* to *t*+2, year *t* included. Count the distinct classes
+   and enter the number in `your_forward_classes`.
+4. Patents filed in *t*-6 or in *t*+3 belong to neither window.
 5. In `your_new_classes`, enter how many forward classes are missing from the base. If the base
    has no class at all, enter `NA`.
 6. Check one patent against the source. Open the patent named in `source_patent` on Google Patents

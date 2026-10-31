@@ -1,4 +1,4 @@
-# Input tests T1-T10 (listed in spec/new_classes.md). Each test changes the input on purpose in a
+# Input tests T1-T11 (listed in spec/new_classes.md). Each test changes the input on purpose in a
 # way whose effect is known in advance, then checks that the output responds the way the
 # definition's rules say it should. They were called R1-R10 until 30 Oct 2026 (change C11), when
 # they were renamed so they can't be confused with the definition's Rules 1-11.
@@ -37,24 +37,27 @@ run_input_tests <- function(builder, pc, fy, n_cases = 25, seed = 1, ref = NULL)
   ref <- if (is.null(ref)) as.data.table(build_new_classes_slow_by_firm(pc, fy)) else as.data.table(ref)
   set.seed(seed)
   cases <- ref[n_base_classes > 0][sample(.N, min(.N, n_cases))]
-  r3 <- r4 <- r5 <- logical(nrow(cases))
+  r3 <- r4 <- r5 <- r11 <- logical(nrow(cases))
   for (i in seq_len(nrow(cases))) {
     f <- cases$firm_id[i]; t <- cases$year[i]
     mine <- pc[firm_id == f]; one <- data.table(firm_id = f, year = t)
     before <- value_at(builder(mine, one), f, t)
     base_cls <- unique(mine[cpc_seq == 0 & filing_year >= t - 5 & filing_year <= t - 1 & !is.na(cpc_subclass), cpc_subclass])
-    if (length(base_cls) == 0) { r3[i] <- r4[i] <- r5[i] <- NA; next }
+    if (length(base_cls) == 0) { r3[i] <- r4[i] <- r5[i] <- r11[i] <- NA; next }
     # T3: a forward-window patent in a class already in the base -> base and new classes unchanged
     a3 <- value_at(builder(add_patent(mine, f, t + 1, base_cls[1]), one), f, t)
     r3[i] <- identical(a3[c(1, 3)], before[c(1, 3)])
     # T4: a forward-window patent in a class in neither set -> one more forward class and one more new class
     r4[i] <- identical(value_at(builder(add_patent(mine, f, t + 2, "Z99Z"), one), f, t), before + c(0L, 1L, 1L))
-    # T5: a patent filed in year t -> nothing changes for focal year t
-    r5[i] <- identical(value_at(builder(add_patent(mine, f, t, "Y99Y"), one), f, t), before)
+    # T5: a patent filed in year t, in a class in neither set -> one more forward class and one more new class
+    r5[i] <- identical(value_at(builder(add_patent(mine, f, t, "Y99Y"), one), f, t), before + c(0L, 1L, 1L))
+    # T11: a patent filed in year t+3, just after the forward window -> nothing changes
+    r11[i] <- identical(value_at(builder(add_patent(mine, f, t + 3, "X99X"), one), f, t), before)
   }
   res$T3_known_class_in_forward <- all(r3, na.rm = TRUE)
   res$T4_new_class_adds_one     <- all(r4, na.rm = TRUE)
-  res$T5_year_t_ignored         <- all(r5, na.rm = TRUE)
+  res$T5_year_t_in_forward      <- all(r5, na.rm = TRUE)
+  res$T11_year_after_forward_ignored <- all(r11, na.rm = TRUE)
 
   # T6: removing other firms' patents changes nothing for this firm
   firms <- unique(cases$firm_id)

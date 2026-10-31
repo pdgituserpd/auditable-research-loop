@@ -37,7 +37,7 @@ layers <- function(builder, label) {
   eq <- function(a, b) (is.na(a) & is.na(b)) | (!is.na(a) & !is.na(b) & a == b)
   l2 <- nrow(fo) == nrow(fx_ex) && all(eq(m$new_classes_exp, m$new_classes)) &&
         all(eq(m$n_base_classes_exp, m$n_base_classes)) && all(eq(m$n_forward_classes_exp, m$n_forward_classes))
-  # L3: input tests T1-T10
+  # L3: input tests T1-T11
   rl <- run_input_tests(builder, pc, fy, ref = slow)
   l3 <- all(rl)
   # L4: agreement with the slow version

@@ -16,13 +16,15 @@ pc <- rbind(
   row("P0201", "F02", 2001, 2003, 0, "C01D"),
   # F03 no forward patents: base {A01B}, forward {} -> 0
   row("P0301", "F03", 1998, 2000, 0, "A01B"),
-  # F04 window edges: 1995 in base, 1994 out, 2000 (t) in neither, 2003 in forward, 2004 out
-  row("P0401", "F04", 1995, 1997, 0, "A01B"),
-  row("P0402", "F04", 1994, 1996, 0, "B01C"),
+  # F04 window edges. 1994 (t-6) is too early, so A01B is new again in 2001. 1995 (t-5) is in the base,
+  # so B01C in 2002 is known. 2000 (t) is in the forward window, so C01D counts as new. 2003 (t+3) is
+  # too late, so D01E doesn't count. Base {B01C}, forward {A01B, B01C, C01D} -> 2 new
+  row("P0401", "F04", 1994, 1996, 0, "A01B"),
+  row("P0402", "F04", 1995, 1997, 0, "B01C"),
   row("P0403", "F04", 2000, 2002, 0, "C01D"),
-  row("P0404", "F04", 2003, 2005, 0, "D01E"),
-  row("P0405", "F04", 2004, 2006, 0, "E01F"),
-  row("P0406", "F04", 2002, 2004, 0, "B01C"),
+  row("P0404", "F04", 2001, 2003, 0, "A01B"),
+  row("P0405", "F04", 2002, 2004, 0, "B01C"),
+  row("P0406", "F04", 2003, 2005, 0, "D01E"),
   # F05 duplicate rows: same patents as F01, every row twice -> still 1
   row("P0501", "F05", 1997, 1999, 0, "A01B"), row("P0501", "F05", 1997, 1999, 0, "A01B"),
   row("P0502", "F05", 1999, 2001, 0, "B01C"), row("P0502", "F05", 1999, 2001, 0, "B01C"),
@@ -35,7 +37,7 @@ pc <- rbind(
   row("P0701", "F07", 1999, 2001, 0, "A01B"),
   row("P0702", "F07", 2001, 2003, 0, "C01D"),
   row("P0703", "F07", 2002, 2004, 0, "C01D"),
-  row("P0704", "F07", 2003, 2005, 0, "C01D"),
+  row("P0704", "F07", 2000, 2002, 0, "C01D"),
   # F08 filing vs grant year: by filing, base {A01B, C01D}, forward {C01D} -> 0
   row("P0801", "F08", 1997, 2000, 0, "A01B"),
   row("P0802", "F08", 1999, 2001, 0, "C01D"),
@@ -66,8 +68,8 @@ expected <- data.frame(
   firm_id = c("F01","F02","F03","F04","F05","F06","F07","F08","F09","F10a","F10b","F11","F11x","F12","F12","F12","F13"),
   year    = c(2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 1998, 2000, 2001, 2000),
   n_base_classes    = c(2, 0, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1),
-  n_forward_classes = c(2, 1, 0, 2, 2, 1, 1, 1, 0, 1, 1, 1, 0, 2, 1, 0, 1),
-  new_classes       = c(1, NA, 0, 2, 1, 0, 1, 0, 0, 1, 0, 1, 0, 2, 1, 0, 1),
+  n_forward_classes = c(2, 1, 0, 3, 2, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1),
+  new_classes       = c(1, NA, 0, 2, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1),
   case = c("simple", "empty base", "no forward patents", "window edges", "duplicate rows",
            "several codes per patent", "repeated class", "filing vs grant year", "missing class",
            "co-owned patent (firm a)", "co-owned patent (firm b)", "firm separation", "firm separation (other firm)",

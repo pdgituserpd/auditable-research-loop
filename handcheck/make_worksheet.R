@@ -1,9 +1,9 @@
 # Random hand-check, step 1: draw firm-years and write a worksheet for a person to work by hand.
 #
-# What the person gets for each case: every patent the firm filed from t-6 to t+4 (one year past
+# What the person gets for each case: every patent the firm filed from t-6 to t+3 (one year past
 # each window on purpose), with its filing year and the subclass of its first-listed CPC code.
-# The windows are NOT marked: the person applies the rules (base t-5..t-1, forward t+1..t+3, year t
-# in neither) from the definition, so an off-by-one in the code cannot be copied into the sheet.
+# The windows are NOT marked: the person applies the rules (base t-5..t-1, forward t..t+2 with year
+# t included) from the definition, so an off-by-one in the code cannot be copied into the sheet.
 # One patent per case is also picked for a source check against the patent itself (Google Patents).
 #
 # Draws use raw patent counts only, never the measure, so the code's answer cannot steer the check.
@@ -36,11 +36,11 @@ count_range <- function(lo_off, hi_off, col = "n") {
   r$v[is.na(r$v)] <- 0L
   r$v
 }
-fy[, `:=`(n_base_pat = count_range(-5, -1), n_fwd_pat = count_range(1, 3),
+fy[, `:=`(n_base_pat = count_range(-5, -1), n_fwd_pat = count_range(0, 2),
           n_year_t   = count_range(0, 0),
-          n_outside  = count_range(-6, -6) + count_range(4, 4),
-          n_missing  = count_range(-5, 3, "n_missing"),
-          n_listed   = count_range(-6, 4))]
+          n_outside  = count_range(-6, -6) + count_range(3, 3),
+          n_missing  = count_range(-5, 2, "n_missing"),
+          n_listed   = count_range(-6, 3))]
 
 set.seed(seed)
 # Random cases: firm-years whose base window has at least one patent (where the measure can exist).
@@ -66,10 +66,10 @@ if (nrow(tricky) > k) tricky <- tricky[seq_len(k)]
 pick <- rbind(pick, tricky, fill = TRUE)
 pick[, case_id := sprintf("H%03d", seq_len(.N))]
 
-# Patent listing per case: t-6 to t+4, windows not marked
+# Patent listing per case: t-6 to t+3, windows not marked
 listing <- rbindlist(lapply(seq_len(nrow(pick)), function(i) {
   f <- pick$firm_id[i]; t <- pick$year[i]
-  x <- first[firm_id == f & filing_year >= t - 6 & filing_year <= t + 4]
+  x <- first[firm_id == f & filing_year >= t - 6 & filing_year <= t + 3]
   if (nrow(x) == 0) x <- data.table(firm_id = f, patent_id = "(none)", filing_year = NA_integer_, cpc_subclass = NA_character_)
   x[, `:=`(case_id = pick$case_id[i], focal_year = t)]
   x[order(filing_year, patent_id)]

@@ -22,20 +22,30 @@ pc <- read_patent_class(pc_path)
 fy <- unique(read_firm_year(fy_path)[, .(firm_id, year)])
 first <- unique(pc[cpc_seq == 0L, .(firm_id, patent_id, filing_year, cpc_subclass)], by = c("firm_id", "patent_id"))
 
-# A case worth walking: 12-30 patents listed from t-6 to t+4, at least one patent filed in year t
-# (tests Rule 6), and at least one subclass found in both windows and one only in the forward window.
+# A case worth walking: 12-30 patents listed from t-6 to t+3, at least one patent filed in year t
+# (Rule 6), and at least one class found in both windows and one only in the forward window. The first
+# pass also asks for a year-t patent in a class missing from the base, so the case shows why year t
+# belongs to the forward window.
 cnt <- function(f, lo, hi) first[firm_id == f & filing_year >= lo & filing_year <= hi]
 set.seed(seed)
 cand_firms <- first[, .N, by = firm_id][N >= 12 & N <= 400, firm_id]
 pick <- NULL
-for (f in sample(cand_firms)) {
-  yrs <- intersect(fy[firm_id == f, year], first[firm_id == f, unique(filing_year)])
-  for (t in sample(yrs)) {
-    x <- cnt(f, t - 6, t + 4)
-    if (nrow(x) < 12 || nrow(x) > 30) next
-    b <- unique(x[filing_year >= t - 5 & filing_year <= t - 1 & !is.na(cpc_subclass), cpc_subclass])
-    w <- unique(x[filing_year >= t + 1 & filing_year <= t + 3 & !is.na(cpc_subclass), cpc_subclass])
-    if (x[filing_year == t, .N] > 0 && length(intersect(b, w)) > 0 && length(setdiff(w, b)) > 0) { pick <- list(f = f, t = t); break }
+cand_firms <- sample(cand_firms)
+for (strict in c(TRUE, FALSE)) {
+  set.seed(seed)
+  for (f in cand_firms) {
+    yrs <- intersect(fy[firm_id == f, year], first[firm_id == f, unique(filing_year)])
+    for (t in sample(yrs)) {
+      x <- cnt(f, t - 6, t + 3)
+      if (nrow(x) < 12 || nrow(x) > 30) next
+      b <- unique(x[filing_year >= t - 5 & filing_year <= t - 1 & !is.na(cpc_subclass), cpc_subclass])
+      w <- unique(x[filing_year >= t & filing_year <= t + 2 & !is.na(cpc_subclass), cpc_subclass])
+      new_in_t <- setdiff(unique(x[filing_year == t & !is.na(cpc_subclass), cpc_subclass]), b)
+      ok <- x[filing_year == t, .N] > 0 && length(intersect(b, w)) > 0 && length(setdiff(w, b)) > 0
+      if (strict) ok <- ok && length(new_in_t) > 0
+      if (ok) { pick <- list(f = f, t = t); break }
+    }
+    if (!is.null(pick)) break
   }
   if (!is.null(pick)) break
 }
@@ -43,7 +53,7 @@ if (is.null(pick)) stop("no suitable case found")
 f <- pick$f; t <- pick$t
 
 mine_all <- pc[firm_id == f]
-x <- mine_all[filing_year >= t - 6 & filing_year <= t + 4][order(filing_year, patent_id, cpc_seq)]
+x <- mine_all[filing_year >= t - 6 & filing_year <= t + 3][order(filing_year, patent_id, cpc_seq)]
 out <- character()
 p <- function(...) out <<- c(out, paste0(...))
 tbl <- function(d) {
@@ -56,7 +66,7 @@ tbl <- function(d) {
 p("# Worked case: firm ", f, ", focal year ", t); p("")
 p("Read this next to the slow version (`R/new_classes_slow.R`) and the definition (`spec/new_classes.md`). Count each step yourself, and tick its box when your count agrees."); p("")
 p("Patents are linked to the firm by rule A (decision D11). Each patent number links to the patent's page on Google Patents, so you can check any of them against the source."); p("")
-p("## Step 0. Every code on every patent the firm filed from ", t - 6, " to ", t + 4); p("")
+p("## Step 0. Every code on every patent the firm filed from ", t - 6, " to ", t + 3); p("")
 p("`cpc_seq` is the code's position on the patent: 0 for the first code listed, 1 for the second, and so on."); p("")
 tbl(x[, .(patent = sprintf("[%s](https://patents.google.com/patent/US%s)", patent_id, patent_id), filing_year, grant_year, cpc_seq, cpc_subclass)])
 
@@ -73,14 +83,14 @@ tbl(bw[, .(patent_id, filing_year, cpc_subclass)])
 B <- sort(unique(bw$cpc_subclass))
 p("- [ ] Base set B = {", paste(B, collapse = ", "), "}, ", length(B), " classes."); p("")
 
-p("## Step 4. Rule 5: forward window, patents filed ", t + 1, " to ", t + 3); p("")
-fw <- s2[filing_year >= t + 1 & filing_year <= t + 3]
+p("## Step 4. Rules 5 and 6: forward window, patents filed ", t, " to ", t + 2, " (year ", t, " included)"); p("")
+fw <- s2[filing_year >= t & filing_year <= t + 2]
 tbl(fw[, .(patent_id, filing_year, cpc_subclass)])
 Fs <- sort(unique(fw$cpc_subclass))
 p("- [ ] Forward set F = {", paste(Fs, collapse = ", "), "}, ", length(Fs), " classes."); p("")
 
-p("## Step 5. Rule 6: patents filed in ", t, " itself, and in ", t - 6, " and ", t + 4, ", belong to neither window"); p("")
-tbl(s2[filing_year %in% c(t - 6, t, t + 4), .(patent_id, filing_year, cpc_subclass)])
+p("## Step 5. Patents filed in ", t - 6, " and ", t + 3, " belong to neither window"); p("")
+tbl(s2[filing_year %in% c(t - 6, t + 3), .(patent_id, filing_year, cpc_subclass)])
 p("- [ ] None of these rows appears in Step 3 or Step 4."); p("")
 
 p("## Step 6. Rule 7: classes in F that are not in B"); p("")
