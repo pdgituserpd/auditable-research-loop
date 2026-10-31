@@ -1,4 +1,4 @@
-# Real-data runs (18 and 25 Oct 2026)
+# Real-data runs (18, 25 and 30 Oct 2026)
 
 The inputs are public: PatentsView's patent tables and DISCERN 2.0.1, prepared by
 `data/prepare_real.R` with link rule A (decision D11, waiting for the researcher's approval). The
@@ -35,8 +35,9 @@ fixed the comparison script, and the measure itself was unaffected.
 ## The checks on the real data
 
 `report/catch_matrix_real_A.csv` shows which check caught which deliberate bug. The correct version
-passes every check, and the fast version, the slow version and the blind rebuild agree on all
-157,180 firm-years.
+passes every check, and the fast version, the slow version and the blind rebuild agree on every
+column of all 157,180 firm-years. These results are from the 30 Oct run with definition version 0.3,
+with a blind rebuild written again from that version.
 
 Compared with the made-up data:
 
@@ -49,10 +50,13 @@ Compared with the made-up data:
 - M9 (class cut to three characters) was caught only by the fake firms on the made-up data. On the
   real data the slow version and the blind rebuild catch it too, because real CPC subclasses can
   share their first three characters (for example A01B and A01C).
-- M10 (base window shifted one year) gets past the fake firms. The input tests, the slow version
-  and the blind rebuild catch it.
-- In the AI code review test (`ai_review/`), every reviewer found every bug at the right line and
-  passed the correct version, in both rounds. These bugs are too easy to tell reviewers apart.
+- M6 is the definition's own earlier rule, with the forward window at *t*+1 to *t*+3, used as a bug
+  since the window moved to *t* to *t*+2 on 30 Oct (decision D10, change C13). Five checks catch it:
+  the fake firms, the input tests (T5 and T11), the slow version, the blind rebuild and the saved
+  checksum.
+- In the AI code review test (`ai_review/`, run on 25 Oct with the earlier definition), every
+  reviewer found every bug at the right line and passed the correct version, in both rounds. These
+  bugs are too easy to tell reviewers apart.
 
 ## Run time
 

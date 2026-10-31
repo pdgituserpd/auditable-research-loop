@@ -4,7 +4,7 @@ Read this next to the slow version (`R/new_classes_slow.R`) and the definition (
 
 Patents are linked to the firm by rule A (decision D11). Each patent number links to the patent's page on Google Patents, so you can check any of them against the source.
 
-## Step 0. Every code on every patent the firm filed from 1991 to 2001
+## Step 0. Every code on every patent the firm filed from 1991 to 2000
 
 `cpc_seq` is the code's position on the patent: 0 for the first code listed, 1 for the second, and so on.
 
@@ -34,22 +34,14 @@ Patents are linked to the firm by rule A (decision D11). Each patent number link
 | [6105226](https://patents.google.com/patent/US6105226) | 1999 | 2000 | 1 | H01L |
 | [6105226](https://patents.google.com/patent/US6105226) | 1999 | 2000 | 10 | Y10T |
 | [6349623](https://patents.google.com/patent/US6349623) | 2000 | 2002 | 0 | B25G |
-| [6556104](https://patents.google.com/patent/US6556104) | 2001 | 2003 | 0 | H03H |
-| [6566980](https://patents.google.com/patent/US6566980) | 2001 | 2003 | 0 | H03H |
-| [6566980](https://patents.google.com/patent/US6566980) | 2001 | 2003 | 8 | Y10T |
-| [6698318](https://patents.google.com/patent/US6698318) | 2001 | 2004 | 0 | B25B |
-| [6698318](https://patents.google.com/patent/US6698318) | 2001 | 2004 | 1 | B25G |
-| [6928718](https://patents.google.com/patent/US6928718) | 2001 | 2005 | 0 | H03H |
-| [6928718](https://patents.google.com/patent/US6928718) | 2001 | 2005 | 1 | H01L |
-| [6928718](https://patents.google.com/patent/US6928718) | 2001 | 2005 | 8 | Y10T |
 
 ## Step 1. Rule 2: keep only each patent's first code (cpc_seq = 0)
 
-- [ ] 32 rows become 18 rows, one per patent.
+- [ ] 24 rows become 14 rows, one per patent.
 
 ## Step 2. Rule 3: drop rows with a blank class
 
-- [ ] 0 row(s) dropped, 18 left.
+- [ ] 0 row(s) dropped, 14 left.
 
 ## Step 3. Rule 4: base window, patents filed 1992 to 1996
 
@@ -62,45 +54,41 @@ Patents are linked to the firm by rule A (decision D11). Each patent number link
 
 - [ ] Base set B = {H03H, H05K}, 2 classes.
 
-## Step 4. Rule 5: forward window, patents filed 1998 to 2000
-
-| patent_id | filing_year | cpc_subclass |
-| --- | --- | --- |
-| 5905325 | 1998 | H03H |
-| 6031315 | 1998 | H03H |
-| 6054794 | 1999 | H03H |
-| 6072264 | 1999 | H03H |
-| 6097131 | 1999 | H03H |
-| 6105226 | 1999 | H03H |
-| 6349623 | 2000 | B25G |
-
-- [ ] Forward set F = {B25G, H03H}, 2 classes.
-
-## Step 5. Rule 6: patents filed in 1997 itself, and in 1991 and 2001, belong to neither window
+## Step 4. Rules 5 and 6: forward window, patents filed 1997 to 1999 (year 1997 included)
 
 | patent_id | filing_year | cpc_subclass |
 | --- | --- | --- |
 | 5866867 | 1997 | B23K |
 | 5917265 | 1997 | H03H |
 | 6011693 | 1997 | H05K |
-| 6556104 | 2001 | H03H |
-| 6566980 | 2001 | H03H |
-| 6698318 | 2001 | B25B |
-| 6928718 | 2001 | H03H |
+| 5905325 | 1998 | H03H |
+| 6031315 | 1998 | H03H |
+| 6054794 | 1999 | H03H |
+| 6072264 | 1999 | H03H |
+| 6097131 | 1999 | H03H |
+| 6105226 | 1999 | H03H |
+
+- [ ] Forward set F = {B23K, H03H, H05K}, 3 classes.
+
+## Step 5. Patents filed in 1991 and 2000 belong to neither window
+
+| patent_id | filing_year | cpc_subclass |
+| --- | --- | --- |
+| 6349623 | 2000 | B25G |
 
 - [ ] None of these rows appears in Step 3 or Step 4.
 
 ## Step 6. Rule 7: classes in F that are not in B
 
-- [ ] New = {B25G}, so **new_classes = 1**.
+- [ ] New = {B23K}, so **new_classes = 1**.
 
 ## Step 7. What the three versions report (read this after your own count)
 
 | version | n_base_classes | n_forward_classes | new_classes |
 | --- | --- | --- | --- |
-| slow version (R) | 2 | 2 | 1 |
-| fast version (R) | 2 | 2 | 1 |
-| blind rebuild (Python) | 2 | 2 | 1 |
+| slow version (R) | 2 | 3 | 1 |
+| fast version (R) | 2 | 3 | 1 |
+| blind rebuild (Python) | 2 | 3 | 1 |
 
 - [ ] Your count in Step 6 matches all three.
 

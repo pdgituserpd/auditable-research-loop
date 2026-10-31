@@ -1,2 +1,2 @@
-35ced444b007bc324b112d7ff3d908d3
-Snapshot of the correct build on the real data (link rule A, public PatentsView + DISCERN 2.0.1), 18 Oct 2026. Status: draft, pending Pouya approval.
+927631005a165367d68caedcca5c7853
+Checksum of the correct version's output on the real data (link rule A, public PatentsView and DISCERN 2.0.1), 30 Oct 2026 (definition version 0.3, forward window t to t+2). Status: draft, waiting for Pouya's approval. The previous checksum (definition version 0.1) is in the Git history.
