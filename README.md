@@ -8,7 +8,7 @@ submitted. [`FILES.md`](FILES.md) explains every folder and file.
 
 In the research process this prototype comes from, AI agents build the variables and run the
 models, and the researcher makes the judgment calls: which question to ask, what each variable
-should capture, and what a result means. No procedure can prove that research code is correct.
+should capture, and what a result means. No procedure can "prove" that research code is correct.
 So the aim here is measured assurance: several checks that fail in different ways, a count of
 what each check catches, and a written record of every decision the researcher made.
 
