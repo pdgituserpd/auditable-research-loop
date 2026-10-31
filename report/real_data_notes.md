@@ -1,7 +1,7 @@
 # Real-data runs (18, 25 and 30 Oct 2026)
 
 The inputs are public: PatentsView's patent tables and DISCERN 2.0.1, prepared by
-`data/prepare_real.R` with link rule A (decision D11, waiting for the researcher's approval). The
+`data/prepare_real.R` with link rule A (decision D11, approved 30 Oct). The
 row counts after each preparation step are in `report/real_prep_log_A.csv`.
 
 ## The data
