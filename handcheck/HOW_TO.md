@@ -1,8 +1,8 @@
 # Hand-check
 
-## The worked case (the prototype's hand-check, decision D09)
+## Manual verification (the prototype's hand-check, decision D09)
 
-The prototype's hand-check is one worked case. Run this from the repository folder:
+The prototype's hand-check is a manual verification of one real firm-year. Run this from the repository folder:
 
 ```bash
 Rscript handcheck/walkthrough.R data/real/A/patent_class.csv data/real/A/firm_year.csv data/real/A/out_blind.csv

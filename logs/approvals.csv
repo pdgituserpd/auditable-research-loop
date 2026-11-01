@@ -1,5 +1,5 @@
 item,what_it_covers,date,approved_by,status
 Planted bug list,"The ten deliberate bugs M1-M10 in R/mutants/index.csv, as rebuilt on 30 Oct for definition version 0.3",2026-10-31,Pouya,approved
-Worked case,"handcheck/results/walkthrough_062738_1997.md (firm 062738, focal year 1997)",2026-10-31,Pouya,"approved: his count agrees with all three versions (base 2 classes, forward 3 classes, 1 new class)"
-Saved checksums,logs/snapshots/new_classes_synthetic.txt and logs/snapshots/new_classes_real_A.txt (definition version 0.3),2026-10-31,Pouya,"approved, after the worked case"
+Manual verification,"handcheck/results/walkthrough_062738_1997.md (firm 062738, focal year 1997)",2026-10-31,Pouya,"approved: his count agrees with all three versions (base 2 classes, forward 3 classes, 1 new class)"
+Saved checksums,logs/snapshots/new_classes_synthetic.txt and logs/snapshots/new_classes_real_A.txt (definition version 0.3),2026-10-31,Pouya,"approved, after the manual verification"
 License,"MIT license for the code (LICENSE), with a citation file (CITATION.cff)",2026-10-31,Pouya,approved

@@ -1,4 +1,4 @@
-# One worked case, walked through the code (decision D09).
+# Manual verification: one real firm-year walked through the code (decision D09).
 #
 # Picks one real firm-year and writes, step by step, what the slow version (R/new_classes_slow.R)
 # does with it: the raw patents, the rows each rule keeps, the base set, the forward set and the
@@ -63,7 +63,7 @@ tbl <- function(d) {
   p("")
 }
 
-p("# Worked case: firm ", f, ", focal year ", t); p("")
+p("# Manual verification: firm ", f, ", focal year ", t); p("")
 p("Read this next to the slow version (`R/new_classes_slow.R`) and the definition (`spec/new_classes.md`). Count each step yourself, and tick its box when your count agrees."); p("")
 p("Patents are linked to the firm by rule A (decision D11). Each patent number links to the patent's page on Google Patents, so you can check any of them against the source."); p("")
 p("## Step 0. Every code on every patent the firm filed from ", t - 6, " to ", t + 3); p("")

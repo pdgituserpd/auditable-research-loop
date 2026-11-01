@@ -1,4 +1,4 @@
-# Worked case: firm 062738, focal year 1997
+# Manual verification: firm 062738, focal year 1997
 
 Read this next to the slow version (`R/new_classes_slow.R`) and the definition (`spec/new_classes.md`). Count each step yourself, and tick its box when your count agrees.
 

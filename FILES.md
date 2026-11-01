@@ -32,7 +32,7 @@ Two words used throughout:
 | File | What it is |
 |---|---|
 | `new_classes_fast.R` | The fast version of the measure, the one a paper would use. It handles all firms at once with table joins |
-| `new_classes_slow.R` | The slow version. It goes one firm-year at a time and follows the definition line by line, with each line labeled by its rule number. This is the version the researcher reads in the worked case |
+| `new_classes_slow.R` | The slow version. It goes one firm-year at a time and follows the definition line by line, with each line labeled by its rule number. This is the version the researcher reads in the manual verification |
 | `checks.R` | The six data checks on the finished table (one row per firm-year, row count, no negative or infinite values, missing exactly when the base is empty, never more new classes than forward classes) |
 | `runlog.R` | Writes a record of every run to `logs/runs/`, including checksums of the input and output files |
 | `io.R` | Reads the input files with fixed column types, and compares two outputs firm-year by firm-year |
@@ -69,9 +69,9 @@ Two words used throughout:
 
 | File | What it is |
 |---|---|
-| `HOW_TO.md` | Instructions for the worked case and for the larger random hand-check kept for later |
-| `walkthrough.R` | Picks one real firm-year and writes the worked case: every patent, each rule applied in turn with a box to tick, and the three versions' answers last |
-| `results/walkthrough_<firm>_<year>.md` | The worked case for the researcher to go through |
+| `HOW_TO.md` | Instructions for the manual verification and for the larger random hand-check kept for later |
+| `walkthrough.R` | Picks one real firm-year and writes the manual verification sheet: every patent, each rule applied in turn with a box to tick, and the three versions' answers last |
+| `results/walkthrough_<firm>_<year>.md` | The manual verification sheet for the researcher to go through |
 | `make_worksheet.R`, `compare_handcheck.R` | The random hand-check tool kept for Stage 2: one script draws the cases and writes a sheet to fill in, the other scores the filled sheet against the code |
 | `sheets/synthetic_2026-10-18_*.csv` | An example sheet built from the made-up data |
 | `results/*_TOOLTEST.csv` | Tests of the scoring script with a machine-filled sheet (one with a planted wrong answer). They contain no one's hand-check |
@@ -91,7 +91,7 @@ Two words used throughout:
 | File | What it is |
 |---|---|
 | `decisions.csv` | The decision log: every choice the definition leaves open (D01 to D15), with the options, the choice, the reason, the published precedent, who decided and whether it is settled |
-| `approvals.csv` | The researcher's one-time sign-offs that aren't decisions or changes: the planted bug list, the worked case, the saved checksums and the license, each with its date |
+| `approvals.csv` | The researcher's one-time sign-offs that aren't decisions or changes: the planted bug list, the manual verification, the saved checksums and the license, each with its date |
 | `changes.csv` | The change log: every change made after the plan (C01 onward), with its class, its reason, whether it came before or after results, the two tests every change must pass, and who approved it |
 | `runs/*.json` | One record per run, written automatically: time, code version, R version, settings, a checksum of each input file, every check with its result, and a checksum of each output. The file name is the run's date and time |
 | `snapshots/new_classes_synthetic.txt`, `snapshots/new_classes_real_A.txt` | The saved checksum of the approved output, on the made-up data and on the real data. A checksum is a 32-character code computed from every value in the table, so any change to any value gives a different code. Each later run compares its output with it |

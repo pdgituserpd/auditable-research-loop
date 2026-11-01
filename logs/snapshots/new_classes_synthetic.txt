@@ -1,2 +1,2 @@
 469cc53d599ca56833e4cb148e1e2ece
-Checksum of the correct version's output on the made-up data, 30 Oct 2026 (definition version 0.3, forward window t to t+2). Status: approved by Pouya on 31 Oct 2026, after the worked case. The previous checksum (definition version 0.1) is in the Git history.
+Checksum of the correct version's output on the made-up data, 30 Oct 2026 (definition version 0.3, forward window t to t+2). Status: approved by Pouya on 31 Oct 2026, after the manual verification. The previous checksum (definition version 0.1) is in the Git history.

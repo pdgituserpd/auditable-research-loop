@@ -29,7 +29,7 @@ traded firms from DISCERN 2.0.
 | `python/` | The blind rebuild: the measure written in Python from the definition alone |
 | `tests/` | The fake firms, the input tests T1 to T11, and `run_all_checks.R`, which runs every check on the correct version and on each deliberate bug |
 | `data/` | Scripts that build the input files from the public downloads, a script that compares the patent-to-firm links with the researcher's own pipeline, and a small made-up dataset for trying everything out |
-| `handcheck/` | The one worked case for the researcher, and a tool for a larger random hand-check kept for later |
+| `handcheck/` | The manual verification of one real firm-year by the researcher, and a tool for a larger random hand-check kept for later |
 | `ai_review/` | A test of whether an AI reviewer reading the code can find the deliberate bugs |
 | `logs/` | The decision log, the change log, a record of every run, and the saved checksums of approved outputs |
 | `report/` | Results: which check caught which bug, how well the patent-to-firm links agree, and row counts at each data step |
@@ -43,7 +43,7 @@ traded firms from DISCERN 2.0.
 | Three versions that must agree | The **fast version** in R is the one a paper would use. It handles all firms at once with table joins, which is quick but hard to read. The **slow version** in R goes one firm-year at a time and follows the definition line by line, so a person can read it against the rules. The **blind rebuild** in Python was written by a separate AI agent (a Claude model) from the definition alone, without seeing the R code. All three must give the same answer for every firm-year | `R/new_classes_fast.R`, `R/new_classes_slow.R`, `python/new_classes_blind.py` |
 | Fake firms | 15 invented firms with one to six made-up patents each. Each firm tests one tricky case, such as the window edges, duplicate rows, a patent with several codes or a patent owned by two firms. Their correct answers were worked out from the definition before any version was run | `tests/make_fixtures.R`, `tests/fixtures/` |
 | Input tests T1 to T11 | Each test changes the input on purpose in a way whose effect is known in advance (duplicating every row, adding a patent filed in year *t*, deleting other firms' patents) and checks that the output responds exactly as the definition says. The definition lists all eleven | `tests/input_tests.R` |
-| One worked case | The researcher takes one real firm-year through the slow version and the definition step by step, counting first and seeing the three versions' answers last (decision D09). A random hand-check of 100 or more cases is kept as a tool for later | `handcheck/` |
+| Manual verification | The researcher takes one real firm-year through the slow version and the definition step by step, counting first and seeing the three versions' answers last (decision D09). A random hand-check of 100 or more cases is kept as a tool for later | `handcheck/` |
 | Deliberate bugs | Ten realistic mistakes (M1 to M10), each put into a copy of the fast version. Every check runs on every copy, and a results table shows which check caught which bug | `R/mutants/`, `report/catch_matrix_real_A.csv` |
 | AI code review test | A fresh AI agent reads the definition and one unlabeled version and reports any line that breaks a rule. Both reviewers were Claude models, so this prototype does not test independence across model families | `ai_review/` |
 | Saved checksum | A 32-character code (an MD5 checksum) computed from every value in the approved output table. Any change to any value gives a different code. A later run whose output differs from the approved one is flagged, even when every other check passes | `logs/snapshots/` |
@@ -90,7 +90,7 @@ takes the owner when the application was filed. Rule B takes the owner that DISC
 records when the patent was granted. `data/compare_links.R` compares the links with the
 researcher's own pipeline and keeps only the counts, in `report/`.
 
-The worked case, and the random hand-check kept for later, are explained in
+The manual verification, and the random hand-check kept for later, are explained in
 [`handcheck/HOW_TO.md`](handcheck/HOW_TO.md):
 
 ```bash
