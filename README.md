@@ -1,8 +1,8 @@
 # Auditable research loop: prototype
 
 This repository is the prototype for a Stage 1 proposal to the Organization Science special
-issue "AI-Enabled Frontiers in Organizational Science." It stays private until the proposal is
-submitted. [`FILES.md`](FILES.md) explains every folder and file.
+issue "AI-Enabled Frontiers in Organizational Science." [`FILES.md`](FILES.md) explains every folder
+and file.
 
 ## What this is
 
